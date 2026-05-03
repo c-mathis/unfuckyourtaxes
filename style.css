@@ -11,7 +11,7 @@
     --color-border: rgba(255, 255, 255, 0.1);
 
     /* Typography */
-    --font-main: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-main: 'Lora', 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', serif;
     --font-weight-normal: 400;
     --font-weight-medium: 500;
     --font-weight-bold: 700;
@@ -43,13 +43,28 @@ html {
 }
 
 body {
-    font-family: var(--font-main);
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     font-weight: var(--font-weight-normal);
     background-color: var(--color-bg);
     color: var(--color-text);
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-main);
+}
+
+.fucked-list li,
+.hero .subheadline,
+.cta-subtext,
+.cta-warning,
+.section-intro,
+.cta-fine-print,
+.footer p,
+.footer-tagline {
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
 .container {
@@ -74,13 +89,13 @@ body {
 .hero h1 {
     font-size: clamp(3rem, 10vw, 8rem);
     font-weight: var(--font-weight-normal);
-    line-height: 1;
+    line-height: 1.5;
     margin-bottom: var(--spacing-md);
-    letter-spacing: -0.02em;
+    letter-spacing: -0.1;
 }
 
 .hero .subheadline {
-    font-size: clamp(1.25rem, 3vw, 2rem);
+    font-size: clamp(1.75rem, 3vw, 2rem);
     
     font-weight: var(--font-weight-medium);
 }
@@ -101,14 +116,13 @@ body {
     font-size: clamp(1.25rem, 3vw, 2rem);
     font-weight: var(--font-weight-normal);
     text-align: left;
-   ;
+    font-family: var(--font-main);
 }
 
 .fucked-list {
     list-style: none;
     max-width: 900px;
     margin: 0 auto;
-    counter-reset: fucked-counter;
 }
 
 .fucked-list li {
@@ -117,59 +131,15 @@ body {
     padding: var(--spacing-md) 0;
     border-bottom: 1px solid var(--color-border);
     position: relative;
-    padding-left: 4.5rem;
 }
 
-.fucked-list li:before {
-    content: counter(fucked-counter, decimal-leading-zero);
-    position: absolute;
-    left: 0;
-    color: var(--color-text-muted);
-    font-size: 0.875rem;
-    font-weight: var(--font-weight-medium);
-    line-height: 1.6;
-    top: var(--spacing-md);
-    font-variant-numeric: tabular-nums;
-    letter-spacing: 0.05em;
-}
+
 
 .fucked-list li:last-child {
     border-bottom: none;
 }
 
-/* Progressive counter increments - starts normal, gradually increases */
-.fucked-list li:nth-child(1) { counter-increment: fucked-counter 1; }
-.fucked-list li:nth-child(2) { counter-increment: fucked-counter 1; }
-.fucked-list li:nth-child(3) { counter-increment: fucked-counter 1; }
-.fucked-list li:nth-child(4) { counter-increment: fucked-counter 1; }
-.fucked-list li:nth-child(5) { counter-increment: fucked-counter 1; }
-.fucked-list li:nth-child(6) { counter-increment: fucked-counter 2; }
-.fucked-list li:nth-child(7) { counter-increment: fucked-counter 2; }
-.fucked-list li:nth-child(8) { counter-increment: fucked-counter 3; }
-.fucked-list li:nth-child(9) { counter-increment: fucked-counter 3; }
-.fucked-list li:nth-child(10) { counter-increment: fucked-counter 4; }
-.fucked-list li:nth-child(11) { counter-increment: fucked-counter 4; }
-.fucked-list li:nth-child(12) { counter-increment: fucked-counter 5; }
-.fucked-list li:nth-child(13) { counter-increment: fucked-counter 6; }
-.fucked-list li:nth-child(14) { counter-increment: fucked-counter 7; }
-.fucked-list li:nth-child(15) { counter-increment: fucked-counter 8; }
-.fucked-list li:nth-child(16) { counter-increment: fucked-counter 9; }
-.fucked-list li:nth-child(17) { counter-increment: fucked-counter 10; }
-.fucked-list li:nth-child(18) { counter-increment: fucked-counter 12; }
-.fucked-list li:nth-child(19) { counter-increment: fucked-counter 14; }
-.fucked-list li:nth-child(20) { counter-increment: fucked-counter 16; }
-.fucked-list li:nth-child(21) { counter-increment: fucked-counter 18; }
-.fucked-list li:nth-child(22) { counter-increment: fucked-counter 20; }
-.fucked-list li:nth-child(23) { counter-increment: fucked-counter 24; }
-.fucked-list li:nth-child(24) { counter-increment: fucked-counter 28; }
-.fucked-list li:nth-child(25) { counter-increment: fucked-counter 32; }
-.fucked-list li:nth-child(26) { counter-increment: fucked-counter 36; }
-.fucked-list li:nth-child(27) { counter-increment: fucked-counter 42; }
-.fucked-list li:nth-child(28) { counter-increment: fucked-counter 48; }
-.fucked-list li:nth-child(29) { counter-increment: fucked-counter 54; }
-.fucked-list li:nth-child(30) { counter-increment: fucked-counter 62; }
-.fucked-list li:nth-child(31) { counter-increment: fucked-counter 70; }
-.fucked-list li:nth-child(32) { counter-increment: fucked-counter 445; } /* Big jump to 989 for comedy */
+
 
 /* ============================================
    CTA SECTION
@@ -268,17 +238,21 @@ body {
     display: block;
     font-weight: var(--font-weight-normal);
     margin-bottom: var(--spacing-xs);
-    font-size: 1rem;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: rgba(255, 255, 255, 0.6);
 }
 
 .form-group input,
 .form-group textarea,
 .form-group select {
     width: 100%;
-    background-color: #000000;
-    border: 0.5px solid #fff;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
     color: var(--color-text);
-    padding: 1rem;
+    padding: 0.75rem 0;
     font-size: 1rem;
     font-family: var(--font-main);
 }
@@ -287,8 +261,8 @@ body {
 .form-group textarea:focus,
 .form-group select:focus {
     outline: none;
-    border-color: var(--color-accent);
-    background-color: rgba(255, 255, 255, 0.08);
+    border-bottom-color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.02);
 }
 
 .form-group select {
@@ -383,11 +357,16 @@ body {
 
     .fucked-list li {
         font-size: 1rem;
-        padding-left: var(--spacing-md);
     }
 
     .hero {
         min-height: 60vh;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+        padding: 0.5rem 0;
     }
 }
 

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Are Your Taxes Fucked? | Unfuck Your Taxes</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="IRS problems? Back taxes? Unfiled returns? We fix fucked tax situations. Tax resolution, preparation, and planning.">
+
+    <!-- Open Graph / Social -->
+    <meta property="og:title" content="Are Your Taxes Fucked?">
+    <meta property="og:description" content="We fix fucked tax situations. Fast.">
+    <meta property="og:type" content="website">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Are your taxes fucked?</h1>
+        </div>
+    </section>
+
+    <!-- The List Section -->
+    <section class="list-section">
+        <div class="container">
+            <div class="intro-text">
+                <p>Your taxes might be fucked if...</p>
+            </div>
+
+            <ul class="fucked-list">
+                <li>You haven't filed a tax return in years and you're just hoping the IRS forgets about you</li>
+                <li>You got a letter from the IRS and put it in a drawer instead of opening it</li>
+                <li>You owe the IRS more than you can pay and have no idea what your options are</li>
+                <li>Your wages are being garnished and you're living paycheck to paycheck</li>
+                <li>The IRS put a lien on your property and you found out from your bank</li>
+                <li>You're a 1099 contractor who hasn't been paying quarterly estimates</li>
+                <li>You got audited and you have no receipts, records, or explanation</li>
+                <li>You owe payroll taxes from your business and the IRS is coming after you personally</li>
+                <li>You're paying penalties and interest that are bigger than your original tax debt</li>
+                <li>You filed your own taxes and now you're getting notices you don't understand</li>
+                <li>You used TurboTax and it turns out you missed thousands in deductions</li>
+                <li>You're self-employed and you have no idea what you actually owe</li>
+                <li>You sold crypto and didn't report it because you thought the IRS wouldn't find out</li>
+                <li>You have foreign bank accounts and you've never heard of an FBAR</li>
+                <li>Your bookkeeping is a shoebox full of receipts from three years ago</li>
+                <li>You claimed your dog as a dependent (seriously, don't do this)</li>
+                <li>You're married filing separately when you should be filing jointly, costing you thousands</li>
+                <li>You haven't paid estimated taxes all year and April is coming fast</li>
+                <li>Your business owes state sales tax and you've been ignoring the notices</li>
+                <li>You set up an LLC but you're still paying taxes like a sole proprietor</li>
+                <li>You're paying an accountant who files extensions every year and never calls you back</li>
+                <li>You have unfiled returns from a business that closed years ago</li>
+                <li>The IRS rejected your Offer in Compromise and you don't know why</li>
+                <li>You're in "Currently Not Collectible" status but you have no plan for when that expires</li>
+                <li>You owe taxes from a divorce settlement and your ex isn't helping</li>
+                <li>You withdrew from your 401(k) early and didn't set aside money for taxes</li>
+                <li>You got unemployment benefits and forgot that's taxable income</li>
+                <li>You work gig economy jobs and you're treating gross income as net income</li>
+                <li>You haven't filed because you can't pay, not realizing that makes it worse</li>
+                <li>You're getting Social Security and you didn't know it could be taxable</li>
+                <li>You paid someone cash to "take care of your taxes" and now you're not sure if they actually filed</li>
+                <li>You think you can just ignore the IRS and eventually they'll go away (they won't)</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2>So what are you going to do now? Keep ignoring it?</h2>
+                <p class="cta-warning">The IRS doesn't forget. The penalties don't stop. And it only gets worse.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section">
+        <div class="container">
+
+            <form id="contactForm" class="contact-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name">Your Name</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="phone">Phone</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="taxProblem">Type of Tax Problem</label>
+                        <select id="taxProblem" name="taxProblem" required>
+                            <option value="">Select one...</option>
+                            <option value="unfiled">Unfiled Tax Returns</option>
+                            <option value="debt">Tax Debt / Back Taxes Owed</option>
+                            <option value="audit">IRS Audit or Examination</option>
+                            <option value="wage_garnishment">Wage Garnishment</option>
+                            <option value="bank_levy">Bank Levy</option>
+                            <option value="lien">Tax Lien</option>
+                            <option value="payroll">Payroll Tax Issues</option>
+                            <option value="state">State Tax Problems</option>
+                            <option value="planning">Tax Planning / Preparation</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Conditional: Tax Amount Owed (only shows for debt-related issues) -->
+                <div class="form-group" id="amountOwedGroup" style="display: none;">
+                    <label for="amountOwed">Estimated Tax Amount Owed</label>
+                    <select id="amountOwed" name="amountOwed">
+                        <option value="">Select range...</option>
+                        <option value="0-10k">Under $10,000</option>
+                        <option value="10k-25k">$10,000 - $25,000</option>
+                        <option value="25k-50k">$25,000 - $50,000</option>
+                        <option value="50k-100k">$50,000 - $100,000</option>
+                        <option value="100k-250k">$100,000 - $250,000</option>
+                        <option value="250k+">Over $250,000</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="details">Tell us what's going on</label>
+                    <textarea id="details" name="details" rows="5" placeholder="The more detail you provide, the faster we can help. Be specific about notices you've received, how long this has been going on, etc." required></textarea>
+                </div>
+
+                <button type="submit" class="submit-button">
+                    <span class="button-text">Get Help Now</span>
+                    <span class="button-loader" style="display: none;">Sending...</span>
+                </button>
+
+                <div class="form-feedback" style="display: none;"></div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Unfuck Your Taxes. We fix fucked tax situations.</p>
+            <p class="footer-tagline">Tax resolution. Tax preparation. Tax planning. No judgment.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>

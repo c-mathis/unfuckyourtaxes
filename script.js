@@ -380,7 +380,7 @@ function calculateFuckedScore() {
 function getVerdict(score) {
     return {
         title: 'That\'s f*cked.',
-        message: 'We can help, or help "unfuck" them if you will.',
+        message: 'Believe it or not, we can help.',
         severity: score >= 10 ? 'high' : score >= 5 ? 'medium' : score >= 2 ? 'low' : 'minimal'
     };
 }

@@ -54,6 +54,7 @@ body {
 
 .main-content {
     min-height: 100vh;
+    min-height: 100dvh;
     display: flex;
     flex-direction: column;
 }
@@ -478,6 +479,8 @@ textarea:focus {
     left: 0;
     right: 0;
     bottom: 0;
+    height: 100vh;
+    height: 100dvh;
     background-color: var(--color-bg);
     z-index: 1000;
     display: flex;

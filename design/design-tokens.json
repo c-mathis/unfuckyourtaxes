@@ -1,0 +1,63 @@
+{
+  "$schema": "https://design-tokens.github.io/community-group/format/",
+  "brand": {
+    "name": "Unfuck Your Taxes",
+    "version": "1.0",
+    "sourceOfTruth": "../style.css"
+  },
+  "color": {
+    "black": { "value": "#050505", "type": "color", "role": "default-canvas" },
+    "white": { "value": "#F8F8F4", "type": "color", "role": "primary-light" },
+    "blue": { "value": "#078BFF", "type": "color", "role": "interactive-accent" },
+    "blueSurface": { "value": "#0867CF", "type": "color", "role": "conversion-surface" },
+    "muted": { "value": "#B9B9B3", "type": "color", "role": "secondary-copy-on-black" },
+    "line": { "value": "rgba(248,248,244,.24)", "type": "color", "role": "strong-rule-on-black" },
+    "lineSoft": { "value": "rgba(248,248,244,.10)", "type": "color", "role": "section-rule-on-black" },
+    "lineDark": { "value": "rgba(5,5,5,.28)", "type": "color", "role": "rule-on-white" }
+  },
+  "typography": {
+    "display": {
+      "fontFamily": ["Times New Roman", "Times", "serif"],
+      "fontWeight": 350,
+      "fontStyle": "normal",
+      "case": "title-case",
+      "usage": "headlines, major statements, and the wordmark"
+    },
+    "body": {
+      "fontFamily": ["DM Sans", "sans-serif"],
+      "fontWeight": 400,
+      "fontStyle": "normal",
+      "case": "sentence-case",
+      "usage": "body and support copy"
+    },
+    "utility": {
+      "fontFamily": ["DM Mono", "monospace"],
+      "fontWeight": 500,
+      "fontStyle": "normal",
+      "case": "uppercase",
+      "usage": "eyebrows, labels, URLs, metadata"
+    }
+  },
+  "layout": {
+    "desktopShell": "min(1200px, calc(100% - 48px))",
+    "mobileShell": "calc(100% - 32px)",
+    "sectionPadding": "clamp(5rem, 11vw, 10rem) 0",
+    "headerHeightDesktop": "90px",
+    "headerHeightMobile": "74px",
+    "buttonRadius": "99px",
+    "staticCreativeSafeMargin": "6%"
+  },
+  "surfaceUsage": {
+    "default": "black",
+    "informational": "white",
+    "conversion": "blueSurface"
+  },
+  "constraints": {
+    "italics": false,
+    "gradients": false,
+    "additionalAccentColors": false,
+    "dropShadows": false,
+    "roundedCards": false,
+    "asteriskUsage": "wordmark and censored brand language only"
+  }
+}

@@ -1,106 +1,44 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Are Your Taxes F*cked? | Unfuck Your Taxes</title>
-
-    <!-- SEO Meta Tags -->
-    <meta name="description" content="IRS problems? Back taxes? Unfiled returns? Find out if your taxes are f*cked with our quick assessment.">
-
-    <!-- Open Graph / Social -->
-    <meta property="og:title" content="Are Your Taxes F*cked?">
-    <meta property="og:description" content="Quick assessment to see how f*cked your tax situation is.">
-    <meta property="og:type" content="website">
-
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-
-    <!-- Stylesheet -->
-    <link rel="stylesheet" href="style.css">
-</head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Tax problems happen. Unfuck Your Taxes helps you understand what is wrong, decide what matters, and get current without the runaround.">
+  <meta name="theme-color" content="#121b1d">
+  
+  
+  
+  <title>Unfuck Your Taxes | A straight answer about your taxes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Lora:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap" rel="stylesheet">
+  <link rel="canonical" href="https://unfuckyourtaxes.com/"><link rel="stylesheet" href="style.css?v=3">
+  <script src="analytics.js?v=1"></script><script defer src="script.js?v=3"></script>
+<meta property="og:type" content="website"><meta property="og:site_name" content="Unfuck Your Taxes"><meta property="og:locale" content="en_US"><meta property="og:url" content="https://unfuckyourtaxes.com/"><meta property="og:title" content="Unfuck Your Taxes | A straight answer about your taxes"><meta property="og:description" content="Tax problems happen. Unfuck Your Taxes helps you understand what is wrong, decide what matters, and get current without the runaround."><meta property="og:image" content="https://unfuckyourtaxes.com/assets/og-default.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="Unfuck Your Taxes — a straight answer about your taxes"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Unfuck Your Taxes | A straight answer about your taxes"><meta name="twitter:description" content="Tax problems happen. Unfuck Your Taxes helps you understand what is wrong, decide what matters, and get current without the runaround."><meta name="twitter:image" content="https://unfuckyourtaxes.com/assets/og-default.png"><link rel="icon" href="/assets/favicon.svg" type="image/svg+xml"><script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://unfuckyourtaxes.com/#org","name":"Unfuck Your Taxes","url":"https://unfuckyourtaxes.com/","logo":"https://unfuckyourtaxes.com/assets/og-default.png","image":"https://unfuckyourtaxes.com/assets/og-default.png","description":"Tax preparation, bookkeeping cleanup, unfiled returns, and IRS representation by a licensed Enrolled Agent or CPA.","email":"hello@unfuckyourtaxes.com","address":{"@type":"PostalAddress","addressRegion":"CA","addressCountry":"US"},"areaServed":{"@type":"Country","name":"United States"},"contactPoint":[{"@type":"ContactPoint","contactType":"customer support","email":"hello@unfuckyourtaxes.com","areaServed":"US","availableLanguage":"English"}],"knowsAbout":["Tax preparation","Bookkeeping","Unfiled tax returns","IRS notices","IRS collections","Payroll tax compliance"],"disambiguatingDescription":"Not a law firm. Does not provide legal representation or legal advice."},{"@type":"WebSite","@id":"https://unfuckyourtaxes.com/#website","url":"https://unfuckyourtaxes.com/","name":"Unfuck Your Taxes","publisher":{"@id":"https://unfuckyourtaxes.com/#org"},"inLanguage":"en-US"}]}</script></head>
 <body>
-
-    <!-- Main Content Container -->
-    <div class="main-content">
-        <!-- Hero Section -->
-        <section class="hero">
-            <div class="container">
-                <h1>Are your taxes f*cked?</h1>
-                <p class="hero-subtitle">Let's find out...</p>
-            </div>
-        </section>
-
-        <!-- Quiz Section -->
-        <section class="quiz-section">
-        <div class="container">
-
-            <!-- Progress Bar
-            <div class="progress-container">
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progressFill"></div>
-                </div>
-                <p class="progress-text"><span id="currentStep">1</span> of <span id="totalSteps">5</span></p>
-            </div>  -->
-
-            <!-- Quiz Container -->
-            <div class="quiz-container" id="quizContainer">
-                <!-- Questions will be injected here by JavaScript -->
-            </div>
-
-            <!-- Result Container (hidden initially) -->
-            <div class="result-container" id="resultContainer" style="display: none;">
-                <div class="result-verdict" id="resultVerdict"></div>
-                <div class="result-message" id="resultMessage"></div>
-
-                <!-- Contact Form -->
-                <form id="contactForm" class="contact-form">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="name">Your Name</label>
-                            <input type="text" id="name" name="name" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" id="email" name="email" required>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="phone">Phone</label>
-                        <input type="tel" id="phone" name="phone" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="details">Anything else we should know?</label>
-                        <textarea id="details" name="details" rows="3" placeholder="Optional - any additional details that might help us help you"></textarea>
-                    </div>
-
-                    <button type="submit" class="submit-button">
-                        <span class="button-text">UNF*CK YOUR TAXES</span>
-                        <span class="button-loader" style="display: none;">Sending...</span>
-                    </button>
-
-                    <div class="form-feedback" style="display: none;"></div>
-                </form>
-            </div>
-
-        </div>
-    </section>
-    </div>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2025 Unfuck Your Taxes. We fix f*cked tax situations.</p>
-            <p class="footer-tagline">Tax resolution. Tax preparation. Tax planning. No judgment.</p>
-        </div>
-    </footer>
-
-    <!-- JavaScript -->
-    <script src="script.js"></script>
-</body>
-</html>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header"><div class="shell header-inner">
+    <a class="brand" href="/" aria-label="Unfuck Your Taxes home">UNF<span>*</span>CK<br>YOUR TAXES</a>
+    <button class="menu-button" aria-expanded="false" aria-controls="site-nav"><span></span>Menu</button>
+    <nav id="site-nav" class="site-nav" aria-label="Main navigation">
+      <a class="active" href="/">Home</a><a href="/about">Why us</a><a href="/services">What we fix</a><a href="/process">How it works</a><a href="/resources">Straight answers</a><a class="nav-contact" href="/contact">Talk to us <svg class="icon-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></a>
+    </nav>
+  </div></header>
+  <main id="main">
+    <section class="hero dark"><div class="shell hero-grid">
+      <div><p class="eyebrow light">Any tax problem. No shame required.</p><h1>Let's get your<br><em>taxes</em> unf<span class="censor">*</span>cked.</h1></div>
+      <div class="hero-copy"><p>Tax prep. Tax relief. Unfiled returns. Cleanup. Whatever brought you here, we turn the mess into a clear next step — without making you feel worse about it.</p><a class="button button-light" href="/contact">Tell us what’s going on <b><svg class="icon-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></b></a></div>
+    </div><div class="ticker" aria-hidden="true"><span>NO JARGON / NO RUNAROUND / NO JUDGMENT / </span><span>NO JARGON / NO RUNAROUND / NO JUDGMENT / </span></div></section>
+    <section class="intro section"><div class="shell split-intro"><p class="eyebrow">A better starting point</p><div><h2>You do not need to have it all figured out before asking for help.</h2><p class="lead">Start with the facts: what is filed, what is missing, what the IRS says, and what needs attention first. Then make decisions with someone who explains it like a person.</p><a class="text-link" href="/about">Why we work this way <span><svg class="icon-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span></a></div></div></section>
+    <section class="service-preview section"><div class="shell"><div class="section-heading"><p class="eyebrow">Start wherever you are</p><h2>Whatever is wrong,<br>there is a way forward.</h2></div><div class="service-list">
+      <a href="/services#relief" class="service-row"><span>01</span><h3>Tax relief</h3><p>Debt, notices, collections, liens, levies, and payment-plan questions.</p><b><svg class="icon-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></b></a>
+      <a href="/services#prep" class="service-row"><span>02</span><h3>Tax prep</h3><p>Personal and business returns that need to be filed accurately and on time.</p><b><svg class="icon-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></b></a>
+      <a href="/services#returns" class="service-row"><span>03</span><h3>Unfiled returns</h3><p>Missing years, scattered records, and a practical plan to get current.</p><b><svg class="icon-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></b></a>
+      <a href="/services#cleanup" class="service-row"><span>04</span><h3>Cleanup</h3><p>Books, payroll, and records that need to make sense before the next filing.</p><b><svg class="icon-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></b></a>
+    </div></div></section>
+    <section class="steps section dark"><div class="shell"><div class="section-heading steps-heading"><p class="eyebrow light">What happens next</p><h2>Less guessing.<br>More <em>done.</em></h2></div><ol class="steps-list"><li><span>01 /</span><div><h3>Get the whole picture</h3><p>We gather the records and translate what they actually mean.</p></div></li><li><span>02 /</span><div><h3>Deal with the urgent stuff</h3><p>We sort deadlines and pressure points before they become more expensive.</p></div></li><li><span>03 /</span><div><h3>Make a real plan</h3><p>You know the work, the order, and the next decision — in plain English.</p></div></li></ol><a class="button button-light" href="/process">See the no-surprises process <b><svg class="icon-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></b></a></div></section>
+    <section class="proof section"><div class="shell proof-grid"><p class="eyebrow">The standard</p><blockquote>“A straight answer on what you actually owe is a much better place to start than panic.”</blockquote><div class="proof-points"><p>For people who are behind — not bad people.</p><p>Clear scope, honest priorities, no mystery language.</p><p>Specialist support when the situation calls for it.</p></div></div></section>
+    <section class="cta-band"><div class="shell"><p class="eyebrow light">Stop avoiding it</p><h2>The first conversation<br>is usually the hardest part.</h2><a class="button button-coral" href="/contact">Start with a straight answer <b><svg class="icon-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></b></a></div></section>
+  </main>
+  <footer class="site-footer"><div class="shell footer-grid"><a class="brand" href="/">UNF<span>*</span>CK<br>YOUR TAXES</a><div><p class="footer-title">Tax problems happen.<br>We help you move forward.</p><a class="text-link" href="mailto:hello@unfuckyourtaxes.com">hello@unfuckyourtaxes.com <span><svg class="icon-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></span></a></div><div class="footer-links"><a href="/about">Why us</a><a href="/services">What we fix</a><a href="/process">How it works</a><a href="/resources">Straight answers</a><a href="/faq">FAQ</a><a href="/consultation">Cost &amp; consultation</a><a href="/contact">Contact</a><a href="/terms">Terms</a><a href="/privacy">Privacy</a></div><p class="footer-disclaimer">Unfuck Your Taxes is not affiliated with the IRS or any government agency. Information on this site is general and is not legal, tax, or financial advice. No specific outcome or savings is guaranteed. See <a href="/terms">Terms</a>.</p><p class="copyright">© <span data-year></span> Unfuck Your Taxes<br>California, USA</p></div></footer>
+</body></html>

@@ -520,6 +520,9 @@ async function submitLead() {
     // never to an analytics or advertising platform.
     if (typeof fbq !== 'undefined') fbq('track', 'Lead', { content_name: 'Quiz' }, { eventID: submissionEventId });
     if (typeof gtag !== 'undefined') gtag('event', 'generate_lead', { event_id: submissionEventId, form_location: 'quiz' });
+    if (window.zaraz && typeof window.zaraz.track === 'function') {
+      window.zaraz.track('generate_lead', { event_id: submissionEventId, form_location: 'quiz' });
+    }
     window.location.href = '/thank-you';
   } catch (error) {
     console.error('Form submission error:', error);

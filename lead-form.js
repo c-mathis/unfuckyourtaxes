@@ -167,6 +167,9 @@
         if (typeof gtag !== 'undefined') {
           gtag('event', 'generate_lead', { event_id: eventId, form_location: 'contact' });
         }
+        if (window.zaraz && typeof window.zaraz.track === 'function') {
+          window.zaraz.track('generate_lead', { event_id: eventId, form_location: 'contact' });
+        }
 
         window.setTimeout(function () { window.location.href = CONFIG.thankYou; }, 900);
       }).catch(function () {

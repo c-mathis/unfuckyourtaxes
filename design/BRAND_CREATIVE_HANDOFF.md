@@ -14,6 +14,15 @@ The emotional movement is:
 
 The name is blunt. The execution is serious and administratively credible.
 
+### Copy voice
+
+- Lead with the fact pattern: records, years, notices, balances, deadlines, scope, and the next action.
+- Be direct and plain-English. The brand is not therapeutic, inspirational, or reassuring by default.
+- Empathy is shown through a nonjudgmental process and useful specificity—not emotional validation or slogans.
+- Avoid soft reassurance such as “no shame required,” “we’ve got you,” “you’re not alone,” “way forward,” “calm,” “move forward,” or “a mess is easier to face.”
+- Never promise a tax result, savings amount, timeline, settlement, or eligibility before the underlying record is reviewed.
+- Prefer CTAs that name the work: “Get the facts,” “Talk through the facts,” “See how it works,” and “Start with the record.”
+
 ## Non-negotiable visual system
 
 ### Color tokens

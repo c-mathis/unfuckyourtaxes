@@ -16,7 +16,7 @@ const QUESTIONS = {
   tax_problem: {
     id: 'tax_problem',
     type: 'pills',
-    title: "What's your tax problem that needs fixing?",
+    title: 'What needs attention?',
     options: [
       'I owe money to the IRS or state',
       'I have unfiled tax returns',
@@ -28,7 +28,7 @@ const QUESTIONS = {
   contact: {
     id: 'contact',
     type: 'contact',
-    title: 'Understood. Who are we helping today?'
+    title: 'Who needs help with this?'
   },
   debt_amount: {
     id: 'debt_amount',

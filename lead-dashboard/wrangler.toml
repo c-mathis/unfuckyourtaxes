@@ -4,9 +4,6 @@ compatibility_date = "2026-09-15"
 workers_dev = true
 preview_urls = true
 
-[vars]
-DASHBOARD_USERNAME = "ufyt"
-
 [[d1_databases]]
 binding = "DB"
 database_name = "unfuck-leads"

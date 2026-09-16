@@ -2,16 +2,6 @@ const STATUSES = ['new', 'contacted', 'qualified', 'proposal_sent', 'won', 'lost
 
 export default {
   async fetch(request, env) {
-    if (!isAuthorized(request, env)) {
-      return new Response('Authentication required', {
-        status: 401,
-        headers: {
-          'WWW-Authenticate': 'Basic realm="UFYT Lead Desk", charset="UTF-8"',
-          'Cache-Control': 'no-store',
-        },
-      });
-    }
-
     const url = new URL(request.url);
     if (url.pathname === '/api/leads' && request.method === 'GET') return listLeads(env);
     if (url.pathname === '/api/stats' && request.method === 'GET') return getStats(env);
@@ -31,18 +21,6 @@ export default {
     });
   },
 };
-
-function isAuthorized(request, env) {
-  if (!env.DASHBOARD_PASSWORD) return false;
-  const header = request.headers.get('Authorization') || '';
-  if (!header.startsWith('Basic ')) return false;
-  try {
-    const [username, password] = atob(header.slice(6)).split(':');
-    return username === (env.DASHBOARD_USERNAME || 'ufyt') && password === env.DASHBOARD_PASSWORD;
-  } catch {
-    return false;
-  }
-}
 
 function json(data, status = 200) {
   return new Response(JSON.stringify(data), {
@@ -102,7 +80,7 @@ h1{margin:0;font-size:clamp(26px,4vw,48px);letter-spacing:-.05em;line-height:.95
 details{max-width:330px}summary{cursor:pointer;font-weight:700}pre{white-space:pre-wrap;font:12px/1.45 ui-monospace,SFMono-Regular,monospace;background:#f4f3ef;padding:10px;border-radius:5px;max-height:260px;overflow:auto}.status,.notes{width:100%;border:1px solid var(--line);border-radius:5px;padding:7px;font:inherit}.notes{min-height:64px;resize:vertical}.save{margin-top:6px;padding:6px 9px}.empty{padding:60px 28px;text-align:center;color:var(--muted)}.flash{position:fixed;right:20px;bottom:20px;background:var(--ink);color:#fff;padding:10px 14px;border-radius:7px;display:none}
 @media(max-width:700px){header{align-items:flex-start;flex-direction:column}.stats{grid-template-columns:1fr}.stat{border-right:0;border-bottom:1px solid var(--line)}.filters{position:static;flex-direction:column}.filters input{min-width:0}.lead-table th{top:0}}
 </style></head><body>
-<header><div><h1>UFYT Lead Desk</h1><p>Private lead spreadsheet · newest first</p></div><div class="actions"><button id="refresh">Refresh</button><button class="primary" id="csv">Download CSV</button></div></header>
+<header><div><h1>UFYT Lead Desk</h1><p>Lead spreadsheet · newest first</p></div><div class="actions"><button id="refresh">Refresh</button><button class="primary" id="csv">Download CSV</button></div></header>
 <section class="stats"><div class="stat"><b id="total">—</b><span>Total leads</span></div><div class="stat"><b id="today">—</b><span>Today</span></div><div class="stat"><b id="open">—</b><span>Open</span></div></section>
 <div class="filters"><input id="search" type="search" placeholder="Search name, email, phone, problem or campaign"><select id="statusFilter"><option value="">All statuses</option><option>new</option><option>contacted</option><option>qualified</option><option>proposal_sent</option><option>won</option><option>lost</option></select></div>
 <div class="table-wrap"><table class="lead-table"><thead><tr><th>Date</th><th>Lead</th><th>Contact</th><th>Situation</th><th>Score</th><th>Campaign</th><th>Status & notes</th></tr></thead><tbody id="rows"></tbody></table><div class="empty" id="empty" hidden>No leads match this view.</div></div><div class="flash" id="flash"></div>

@@ -5,8 +5,7 @@
 const CONFIG = {
   // Shared Unfuck Leads worker, same as /contact. Tagged brand: 'ufyt'.
   formEndpoint: 'https://unfuck-leads-worker.cameron-07f.workers.dev/submit',
-  successMessage: "Got it. We'll get back to you within 24 hours.",
-  errorMessage: 'Something went wrong. Try emailing us directly instead.'
+  errorMessage: 'That did not send.'
 };
 
 // ============================================
@@ -17,64 +16,104 @@ const QUESTIONS = {
   tax_problem: {
     id: 'tax_problem',
     type: 'pills',
-    title: "What's going on?",
+    title: "What's your tax problem that needs fixing?",
     options: [
-      'I owe money to the IRS',
-      "Haven't filed in years",
-      'Got a scary letter from the IRS',
-      'Not sure, but something feels wrong'
+      'I owe money to the IRS or state',
+      'I have unfiled tax returns',
+      'I received a notice from the IRS or am being audited',
+      'I need help filing or organizing my taxes',
+      "I'm not sure — I just know I'm f*cked"
     ]
+  },
+  contact: {
+    id: 'contact',
+    type: 'contact',
+    title: 'Understood. Who are we helping today?'
   },
   debt_amount: {
     id: 'debt_amount',
-    type: 'select',
-    title: 'How deep in the hole are you?',
-    options: ['Under $10k', '$10k - $25k', '$25k - $50k', '$50k - $100k', 'Over $100k', 'No idea']
-  },
-  collection_action: {
-    id: 'collection_action',
     type: 'pills',
-    title: 'Has the IRS done any of this yet?',
-    options: ['Garnishing my wages', 'Froze my bank account', 'Filed a lien', 'Just sending threats', 'Nothing yet']
+    title: 'Approximately how much do you owe?',
+    options: [
+      '$0 - $10,000',
+      '$10,001 - $20,000',
+      '$20,001 - $30,000',
+      '$30,001 - $40,000',
+      '$40,001 - $50,000',
+      '$50,000 - $75,000',
+      '$75,000 - $100,000',
+      '$100,001 - $199,999',
+      '$200,000 - $300,000',
+      '$300,000 - $400,000',
+      '$400,000 - $500,000'
+    ]
+  },
+  collection_actions: {
+    id: 'collection_actions',
+    type: 'multi',
+    title: 'Have you received any of the following? (Select all that apply)',
+    options: [
+      'Wage garnishment or bank levy',
+      'Tax lien',
+      'IRS notice or letter',
+      'None yet'
+    ]
   },
   unfiled_years: {
     id: 'unfiled_years',
     type: 'pills',
-    title: 'How many years behind are you?',
-    options: ['1-2 years', '3-5 years', '6+ years', 'Honestly no idea']
+    title: 'How many years are unfiled?',
+    options: ['1 year', '2–3 years', '4–5 years', '6+ years']
+  },
+  self_employed: {
+    id: 'self_employed',
+    type: 'pills',
+    title: 'Are you self-employed?',
+    options: ['Yes', 'No']
   },
   notice_type: {
     id: 'notice_type',
     type: 'pills',
-    title: 'What kind of letter was it?',
-    options: ['They say I owe money', 'Audit or review notice', 'Missing information request', 'No idea what it means']
+    title: 'What type of notice did you receive?',
+    options: ['Balance due or collections', 'Audit notice', 'CP2000 or other', 'Not sure']
   },
-  notice_responded: {
-    id: 'notice_responded',
+  notice_deadline: {
+    id: 'notice_deadline',
+    type: 'date',
+    title: 'What is the deadline listed on the notice?',
+    optional: true
+  },
+  filing_status: {
+    id: 'filing_status',
     type: 'pills',
-    title: 'Have you responded to them yet?',
-    options: ["No, haven't responded", 'Tried but got confused', 'Yes, but still have issues', 'Ignored it']
+    title: 'Are you filing as:',
+    options: ['Individual', 'Married filing jointly', 'Self-employed', 'Business owner']
+  },
+  refund_expectation: {
+    id: 'refund_expectation',
+    type: 'pills',
+    title: 'Do you expect to owe or receive a refund?',
+    options: ['Owe', 'Refund', 'Not sure']
   },
   unsure_situation: {
     id: 'unsure_situation',
     type: 'pills',
-    title: "What's making you nervous?",
-    options: ["Haven't filed in a while", 'Not sure if I owe anything', 'Got paid in cash, no records', 'Just have a bad feeling']
-  },
-  unsure_filed_recently: {
-    id: 'unsure_filed_recently',
-    type: 'pills',
-    title: 'Did you file last year?',
-    options: ['Yes', 'No', "Can't remember"]
+    title: 'Which of these sounds closest to your situation?',
+    options: [
+      'I owe money',
+      "I haven't filed or need help filing",
+      'I got a notice or audit letter',
+      'I just need to contact the IRS'
+    ]
   }
 };
 
-// Conditional flow based on the first answer
 const FLOWS = {
-  'I owe money to the IRS': ['debt_amount', 'collection_action'],
-  "Haven't filed in years": ['unfiled_years'],
-  'Got a scary letter from the IRS': ['notice_type', 'notice_responded'],
-  'Not sure, but something feels wrong': ['unsure_situation', 'unsure_filed_recently']
+  'I owe money to the IRS or state': ['debt_amount', 'collection_actions'],
+  'I have unfiled tax returns': ['unfiled_years', 'self_employed'],
+  'I received a notice from the IRS or am being audited': ['notice_type', 'notice_deadline'],
+  'I need help filing or organizing my taxes': ['filing_status', 'refund_expectation'],
+  "I'm not sure — I just know I'm f*cked": ['unsure_situation']
 };
 
 // ============================================
@@ -83,19 +122,20 @@ const FLOWS = {
 
 let currentPath = [];
 let stepIndex = 0;
+let isAdvancing = false;
+let isSubmitting = false;
+let submissionEventId = '';
 const data = {};
 
+const quizProgressContainer = document.getElementById('quizProgress');
 const quizContainer = document.getElementById('quizContainer');
-const resultContainer = document.getElementById('resultContainer');
-const resultVerdict = document.getElementById('resultVerdict');
-const resultMessage = document.getElementById('resultMessage');
 
 // ============================================
 // PATH BUILDING & NAVIGATION
 // ============================================
 
 function buildPath() {
-  currentPath = ['tax_problem'];
+  currentPath = ['tax_problem', 'contact'];
   if (data.tax_problem && FLOWS[data.tax_problem]) currentPath = currentPath.concat(FLOWS[data.tax_problem]);
   return currentPath;
 }
@@ -110,206 +150,457 @@ function getTotalSteps() {
   return currentPath.length;
 }
 
+function clearOldBranchAnswers() {
+  Object.keys(data).forEach((key) => {
+    if (key !== 'tax_problem' && key !== 'contact') delete data[key];
+  });
+}
+
 // ============================================
 // RENDERING
 // ============================================
 
-function render() {
+function render(moveFocus) {
   const step = getCurrentStep();
-  if (!step) { showResults(); return; }
+  if (!step) return;
 
+  const longStep = step.type === 'contact' || (step.options && step.options.length > 6);
+  document.body.classList.toggle('quiz-scroll-step', Boolean(longStep));
+  document.body.classList.toggle('quiz-contact-step', step.type === 'contact');
+  quizProgressContainer.innerHTML = '';
   quizContainer.innerHTML = '';
+  quizContainer.dataset.stepType = step.type;
+
+  renderProgress();
 
   const title = document.createElement('h2');
+  title.id = 'quizQuestion';
   title.className = 'quiz-question-title';
+  title.tabIndex = -1;
   title.textContent = step.title;
   quizContainer.appendChild(title);
 
-  if (step.type === 'pills') {
-    const optionsDiv = document.createElement('div');
-    optionsDiv.className = 'quiz-options';
-    step.options.forEach((option) => {
-      const button = document.createElement('button');
-      button.type = 'button';
-      button.className = 'quiz-option';
-      button.textContent = option;
-      button.addEventListener('click', () => advance(option));
-      optionsDiv.appendChild(button);
+  if (step.type === 'pills') renderPills(step, title);
+  if (step.type === 'multi') renderMulti(step, title);
+  if (step.type === 'contact') renderContactStep(title);
+  if (step.type === 'date') renderDateStep(step, title);
+
+  isAdvancing = false;
+  window.scrollTo({ top: 0, behavior: 'auto' });
+  if (moveFocus) title.focus({ preventScroll: true });
+}
+
+function renderProgress() {
+  const displayedTotal = data.tax_problem ? getTotalSteps() : 4;
+  const progress = document.createElement('div');
+  progress.className = 'quiz-progress';
+
+  const progressTrack = document.createElement('div');
+  progressTrack.className = 'quiz-progress-track';
+  progressTrack.setAttribute('role', 'progressbar');
+  progressTrack.setAttribute('aria-label', 'Assessment progress');
+  progressTrack.setAttribute('aria-valuemin', '1');
+  progressTrack.setAttribute('aria-valuemax', String(displayedTotal));
+  progressTrack.setAttribute('aria-valuenow', String(stepIndex + 1));
+
+  const progressValue = document.createElement('span');
+  progressValue.style.width = (((stepIndex + 1) / displayedTotal) * 100) + '%';
+  progressTrack.appendChild(progressValue);
+  progress.appendChild(progressTrack);
+  quizProgressContainer.appendChild(progress);
+
+  const progressMeta = document.createElement('div');
+  progressMeta.className = 'quiz-progress-meta';
+  const progressText = document.createElement('span');
+  progressText.textContent = stepIndex === 0 ? 'Question 1' : 'Question ' + (stepIndex + 1) + ' of ' + displayedTotal;
+  progressMeta.appendChild(progressText);
+
+  if (stepIndex > 0) {
+    const backButton = document.createElement('button');
+    backButton.type = 'button';
+    backButton.className = 'quiz-back';
+    backButton.textContent = '\u2190 Back';
+    backButton.addEventListener('click', goBack);
+    progressMeta.appendChild(backButton);
+  }
+  quizContainer.appendChild(progressMeta);
+}
+
+function renderPills(step, title) {
+  const optionsDiv = document.createElement('div');
+  optionsDiv.className = 'quiz-options';
+  optionsDiv.setAttribute('role', 'group');
+  optionsDiv.setAttribute('aria-labelledby', title.id);
+
+  step.options.forEach((option) => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'quiz-option';
+    if (option.length > 46) button.classList.add('quiz-option-long');
+    button.textContent = option;
+    button.addEventListener('click', () => advance(option));
+    optionsDiv.appendChild(button);
+  });
+  quizContainer.appendChild(optionsDiv);
+}
+
+function renderMulti(step, title) {
+  const selected = new Set(Array.isArray(data[step.id]) ? data[step.id] : []);
+  const optionsDiv = document.createElement('div');
+  optionsDiv.className = 'quiz-options quiz-multi-options';
+  optionsDiv.setAttribute('role', 'group');
+  optionsDiv.setAttribute('aria-labelledby', title.id);
+
+  const continueButton = makeContinueButton('Next');
+  continueButton.disabled = selected.size === 0;
+
+  step.options.forEach((option) => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'quiz-option quiz-multi-option';
+    if (option.length > 46) button.classList.add('quiz-option-long');
+    button.textContent = option;
+    button.setAttribute('aria-pressed', selected.has(option) ? 'true' : 'false');
+    button.classList.toggle('is-selected', selected.has(option));
+    button.addEventListener('click', () => {
+      if (option === 'None yet') {
+        selected.clear();
+        selected.add(option);
+      } else {
+        selected.delete('None yet');
+        if (selected.has(option)) selected.delete(option);
+        else selected.add(option);
+      }
+      optionsDiv.querySelectorAll('.quiz-multi-option').forEach((optionButton) => {
+        const active = selected.has(optionButton.textContent);
+        optionButton.classList.toggle('is-selected', active);
+        optionButton.setAttribute('aria-pressed', active ? 'true' : 'false');
+      });
+      continueButton.disabled = selected.size === 0;
     });
-    quizContainer.appendChild(optionsDiv);
-  } else if (step.type === 'select') {
-    const wrap = document.createElement('div');
-    wrap.className = 'quiz-select-wrap';
-    const select = document.createElement('select');
-    select.className = 'quiz-select';
+    optionsDiv.appendChild(button);
+  });
 
-    const placeholder = document.createElement('option');
-    placeholder.value = '';
-    placeholder.disabled = true;
-    placeholder.selected = true;
-    placeholder.textContent = 'Select an option';
-    select.appendChild(placeholder);
+  continueButton.addEventListener('click', () => advance(Array.from(selected)));
+  quizContainer.appendChild(optionsDiv);
+  quizContainer.appendChild(makeActionRow(continueButton));
+}
 
-    step.options.forEach((option) => {
-      const opt = document.createElement('option');
-      opt.value = option;
-      opt.textContent = option;
-      select.appendChild(opt);
+function renderContactStep(title) {
+  const existing = data.contact || {};
+  const form = document.createElement('form');
+  form.className = 'quiz-contact-form';
+  form.noValidate = true;
+  form.setAttribute('aria-labelledby', title.id);
+
+  const firstName = makeField({ id: 'quizFirstName', name: 'first_name', label: 'First name', autocomplete: 'given-name', value: existing.first_name });
+  const lastName = makeField({ id: 'quizLastName', name: 'last_name', label: 'Last name', autocomplete: 'family-name', value: existing.last_name });
+  const email = makeField({ id: 'quizEmail', name: 'email', label: 'Email address', type: 'email', autocomplete: 'email', inputmode: 'email', value: existing.email });
+  const phone = makeField({ id: 'quizPhone', name: 'phone', label: 'Phone number', type: 'tel', autocomplete: 'tel', inputmode: 'tel', value: existing.phone });
+
+  const nameRow = document.createElement('div');
+  nameRow.className = 'quiz-contact-name-row';
+  nameRow.append(firstName.wrapper, lastName.wrapper);
+  form.append(nameRow, email.wrapper, phone.wrapper);
+
+  const honeypot = document.createElement('div');
+  honeypot.className = 'hp-field';
+  honeypot.setAttribute('aria-hidden', 'true');
+  honeypot.innerHTML = '<label for="quizCompanyUrl">Company website</label><input type="text" id="quizCompanyUrl" name="company_url" tabindex="-1" autocomplete="off">';
+  form.appendChild(honeypot);
+
+  const continueButton = makeContinueButton('Next');
+  const feedback = document.createElement('p');
+  feedback.className = 'form-feedback quiz-step-feedback';
+  feedback.setAttribute('role', 'status');
+  feedback.setAttribute('aria-live', 'polite');
+
+  const consent = document.createElement('p');
+  consent.className = 'fine-print form-consent quiz-contact-consent';
+  consent.innerHTML = 'By continuing, you agree that we may contact you about your enquiry. It does not create a client relationship. <strong>Do not send Social Security numbers, bank details, or tax documents here.</strong> See our <a href="/privacy">Privacy Policy</a>.';
+
+  form.append(consent, feedback, continueButton);
+  quizContainer.appendChild(form);
+
+  const fields = [firstName, lastName, email, phone];
+  fields.forEach(({ input, error }) => {
+    input.addEventListener('blur', () => validateContactField(input, error));
+    input.addEventListener('input', () => {
+      if (input.getAttribute('aria-invalid') === 'true') validateContactField(input, error);
     });
+  });
 
-    select.addEventListener('change', () => { if (select.value) advance(select.value); });
-    wrap.appendChild(select);
-    quizContainer.appendChild(wrap);
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    let firstInvalid = null;
+    fields.forEach(({ input, error }) => {
+      if (!validateContactField(input, error) && !firstInvalid) firstInvalid = input;
+    });
+    if (firstInvalid) {
+      feedback.className = 'form-feedback error quiz-step-feedback';
+      feedback.textContent = 'Check the highlighted fields and try again.';
+      firstInvalid.focus();
+      return;
+    }
+
+    data.contact = {
+      first_name: firstName.input.value.trim(),
+      last_name: lastName.input.value.trim(),
+      email: email.input.value.trim(),
+      phone: phone.input.value.trim(),
+      company_url: form.elements.company_url.value.trim()
+    };
+    advance(data.contact);
+  });
+}
+
+function renderDateStep(step, title) {
+  const form = document.createElement('form');
+  form.className = 'quiz-date-form';
+  form.setAttribute('aria-labelledby', title.id);
+
+  const field = document.createElement('div');
+  field.className = 'quiz-field';
+  const label = document.createElement('label');
+  label.htmlFor = 'quizDeadline';
+  label.innerHTML = 'Deadline <span class="optional">Optional</span>';
+  const input = document.createElement('input');
+  input.type = 'date';
+  input.id = 'quizDeadline';
+  input.name = 'notice_deadline';
+  if (data[step.id] && data[step.id] !== 'Not provided') input.value = data[step.id];
+  field.append(label, input);
+
+  const continueButton = makeContinueButton('Submit my answers');
+  form.append(field, continueButton);
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    advance(input.value || 'Not provided');
+  });
+  quizContainer.appendChild(form);
+}
+
+function makeField({ id, name, label, type = 'text', autocomplete, inputmode, value = '' }) {
+  const wrapper = document.createElement('div');
+  wrapper.className = 'quiz-field';
+  const fieldLabel = document.createElement('label');
+  fieldLabel.htmlFor = id;
+  fieldLabel.textContent = label;
+  const input = document.createElement('input');
+  input.type = type;
+  input.id = id;
+  input.name = name;
+  input.required = true;
+  input.autocomplete = autocomplete;
+  if (inputmode) input.inputMode = inputmode;
+  input.value = value || '';
+  const error = document.createElement('p');
+  error.className = 'field-error';
+  error.id = id + 'Error';
+  input.setAttribute('aria-describedby', error.id);
+  wrapper.append(fieldLabel, input, error);
+  return { wrapper, input, error };
+}
+
+function validateContactField(field, error) {
+  const value = field.value.trim();
+  let message = '';
+  if (!value) message = 'Please enter your ' + field.previousElementSibling.textContent.toLowerCase() + '.';
+  else if (field.type === 'email' && field.validity.typeMismatch) message = 'Please enter a valid email address.';
+  else if (field.type === 'tel' && value.replace(/\D/g, '').length < 7) message = 'Please enter a valid phone number.';
+  field.setAttribute('aria-invalid', message ? 'true' : 'false');
+  error.textContent = message;
+  return !message;
+}
+
+function makeContinueButton(label) {
+  const button = document.createElement('button');
+  button.type = 'submit';
+  button.className = 'button button-light quiz-step-continue';
+  button.textContent = label;
+  return button;
+}
+
+function makeActionRow(button) {
+  const row = document.createElement('div');
+  row.className = 'quiz-step-actions';
+  row.appendChild(button);
+  return row;
+}
+
+// ============================================
+// NAVIGATION & SUBMISSION
+// ============================================
+
+function advance(value) {
+  if (isAdvancing || isSubmitting) return;
+  const step = getCurrentStep();
+  if (!step) return;
+
+  if (step.id === 'tax_problem' && data.tax_problem !== value) clearOldBranchAnswers();
+  data[step.id] = value;
+  isAdvancing = true;
+  quizContainer.querySelectorAll('button, input, select').forEach((control) => { control.disabled = true; });
+
+  const nextIndex = stepIndex + 1;
+  const delay = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 140;
+  setTimeout(() => {
+    if (nextIndex < getTotalSteps()) {
+      stepIndex = nextIndex;
+      render(true);
+    } else {
+      submitLead();
+    }
+  }, delay);
+}
+
+function goBack() {
+  if (isAdvancing || isSubmitting || stepIndex === 0) return;
+  stepIndex--;
+  render(true);
+}
+
+async function submitLead() {
+  if (isSubmitting) return;
+  isSubmitting = true;
+  document.body.classList.remove('quiz-scroll-step');
+  document.body.classList.remove('quiz-contact-step');
+  renderSubmittingState();
+
+  const contact = data.contact || {};
+  if (contact.company_url) {
+    window.location.href = '/thank-you';
+    return;
+  }
+
+  const answerKeys = buildPath().filter((key) => key !== 'contact');
+  const answerSummary = answerKeys.map((key) => QUESTIONS[key].title + ' ' + formatAnswer(data[key]));
+  const situationSummary = ['Phone: ' + (contact.phone || ''), ...answerSummary].join('\n');
+  const trackingData = captureUrlParameters();
+  submissionEventId = submissionEventId || ('ufyt_' + Date.now() + '_' + Math.random().toString(36).slice(2, 11));
+
+  const payload = Object.assign({
+    brand: 'ufyt',
+    source: 'unfuckyourtaxes',
+    surface: 'quiz',
+    name: ((contact.first_name || '') + ' ' + (contact.last_name || '')).trim(),
+    first_name: contact.first_name || '',
+    last_name: contact.last_name || '',
+    email: contact.email || '',
+    phone: contact.phone || '',
+    details: null,
+    company_url: '',
+    // Compatibility fields for the currently deployed shared lead worker.
+    problem: situationSummary,
+    situation: situationSummary,
+    selected_issues: answerSummary.join(' | '),
+    issues_count: answerSummary.length,
+    internal_triage_score: calculateTriageScore(),
+    event_id: submissionEventId,
+    submitted_at: new Date().toISOString()
+  }, flattenAnswers(), trackingData);
+
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 12000);
+
+  try {
+    const response = await fetch(CONFIG.formEndpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify(payload),
+      signal: controller.signal
+    });
+    if (!response.ok) {
+      const error = new Error('Server returned an error');
+      error.status = response.status;
+      throw error;
+    }
+
+    // Quiz answers are tax-status information. They go to the lead worker,
+    // never to an analytics or advertising platform.
+    if (typeof fbq !== 'undefined') fbq('track', 'Lead', { content_name: 'Quiz' }, { eventID: submissionEventId });
+    if (typeof gtag !== 'undefined') gtag('event', 'generate_lead', { event_id: submissionEventId, form_location: 'quiz' });
+    window.location.href = '/thank-you';
+  } catch (error) {
+    console.error('Form submission error:', error);
+    isSubmitting = false;
+    const message = error.status === 429
+      ? 'Too many attempts from this connection. Please wait a while or email us.'
+      : CONFIG.errorMessage + ' Try again or email us instead.';
+    renderSubmissionError(message);
+  } finally {
+    clearTimeout(timeout);
   }
 }
 
-function advance(value) {
-  const step = getCurrentStep();
-  data[step.id] = value;
-  stepIndex++;
-  setTimeout(() => {
-    if (stepIndex < getTotalSteps()) render();
-    else showResults();
-  }, 300);
+function renderSubmittingState() {
+  const progressValue = quizProgressContainer.querySelector('.quiz-progress-track span');
+  if (progressValue) progressValue.style.width = '100%';
+  quizContainer.innerHTML = '';
+  const meta = document.createElement('p');
+  meta.className = 'quiz-progress-meta quiz-submit-meta';
+  meta.textContent = 'All questions answered';
+  const title = document.createElement('h2');
+  title.className = 'quiz-question-title';
+  title.textContent = 'Sending your answers…';
+  const message = document.createElement('p');
+  message.className = 'quiz-submit-message';
+  message.textContent = 'Hang tight. This should only take a moment.';
+  quizContainer.append(meta, title, message);
 }
 
-// ============================================
-// RESULTS & VERDICT
-// ============================================
+function renderSubmissionError(message) {
+  quizContainer.innerHTML = '';
+  const meta = document.createElement('p');
+  meta.className = 'quiz-progress-meta quiz-submit-meta';
+  meta.textContent = 'Almost done';
+  const title = document.createElement('h2');
+  title.className = 'quiz-question-title';
+  title.textContent = 'That did not send.';
+  const feedback = document.createElement('p');
+  feedback.className = 'form-feedback error quiz-submit-error';
+  feedback.appendChild(document.createTextNode(message + ' '));
+  const email = document.createElement('a');
+  email.href = 'mailto:hello@unfuckyourtaxes.com?subject=I%20need%20help%20with%20my%20taxes';
+  email.textContent = 'hello@unfuckyourtaxes.com';
+  feedback.appendChild(email);
+  const retry = makeContinueButton('Try again');
+  retry.addEventListener('click', submitLead);
+  quizContainer.append(meta, title, feedback, makeActionRow(retry));
+}
 
-function calculateFuckedScore() {
+function formatAnswer(value) {
+  if (Array.isArray(value)) return value.join(', ');
+  return value == null ? '' : String(value);
+}
+
+function flattenAnswers() {
+  const answers = {};
+  buildPath().forEach((key) => {
+    if (key !== 'contact') answers[key] = formatAnswer(data[key]);
+  });
+  return answers;
+}
+
+function calculateTriageScore() {
   let score = 0;
-  const problem = data.tax_problem || '';
-  if (problem.includes('owe money')) score += 3;
-  if (problem.includes("filed in years")) score += 2;
-  if (problem.includes('scary letter')) score += 2;
-
-  const debt = data.debt_amount || '';
-  if (debt.includes('Under $10k')) score += 1;
-  if (debt.includes('$10k - $25k')) score += 2;
-  if (debt.includes('$25k - $50k')) score += 3;
-  if (debt.includes('$50k - $100k')) score += 4;
-  if (debt.includes('Over $100k')) score += 5;
-
-  const action = data.collection_action || '';
-  if (action.includes('Garnishing')) score += 5;
-  if (action.includes('Froze')) score += 5;
-  if (action.includes('lien')) score += 4;
-  if (action.includes('threats')) score += 2;
-
-  const years = data.unfiled_years || '';
-  if (years.includes('1-2')) score += 2;
-  if (years.includes('3-5')) score += 3;
-  if (years.includes('6+')) score += 5;
-  if (years.includes('no idea')) score += 3;
-
-  const notice = data.notice_type || '';
-  if (notice.includes('owe money')) score += 3;
-  if (notice.includes('Audit')) score += 4;
-  if (notice.includes('No idea')) score += 2;
-
-  const responded = data.notice_responded || '';
-  if (responded.includes('Ignored')) score += 3;
-  if (responded.includes("haven't responded")) score += 2;
-
-  const unsure = data.unsure_situation || '';
-  if (unsure.includes("Haven't filed")) score += 3;
-  if (unsure.includes('paid in cash')) score += 4;
-  if (unsure.includes('Not sure if I owe')) score += 2;
-
-  const filed = data.unsure_filed_recently || '';
-  if (filed.includes('No')) score += 2;
-  if (filed.includes("Can't remember")) score += 3;
-
+  if ((data.tax_problem || '').includes('owe money')) score += 3;
+  if ((data.tax_problem || '').includes('unfiled')) score += 2;
+  if ((data.tax_problem || '').includes('notice')) score += 2;
+  const amount = data.debt_amount || '';
+  if (amount.includes('$50,000') || amount.includes('$75,000')) score += 3;
+  if (amount.includes('$100,001') || amount.includes('$200,000')) score += 4;
+  if (amount.includes('$300,000') || amount.includes('$400,000')) score += 5;
+  const actions = Array.isArray(data.collection_actions) ? data.collection_actions : [];
+  if (actions.includes('Wage garnishment or bank levy')) score += 5;
+  if (actions.includes('Tax lien')) score += 4;
+  if (data.unfiled_years === '6+ years') score += 4;
+  if (data.notice_type === 'Audit notice') score += 4;
   return score;
 }
 
-function showResults() {
-  const score = calculateFuckedScore();
-  resultContainer.dataset.score = score;
-
-  resultVerdict.innerHTML = 'That’s f<span class="censor">*</span>cked.';
-  resultMessage.textContent = 'Believe it or not, we can help.';
-
-  resultContainer.classList.add('is-fullscreen');
-  requestAnimationFrame(() => requestAnimationFrame(() => resultContainer.classList.add('is-visible')));
-
-  setupFormSubmission();
-}
-
 // ============================================
-// FORM HANDLING
-// ============================================
-
-function setupFormSubmission() {
-  const form = document.getElementById('contactForm');
-  const submitButton = form.querySelector('.quiz-submit');
-  const buttonText = submitButton.querySelector('.button-text');
-  const buttonLoader = submitButton.querySelector('.button-loader');
-  const feedback = form.querySelector('.form-feedback');
-
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    submitButton.disabled = true;
-    buttonText.style.display = 'none';
-    buttonLoader.style.display = 'inline';
-    feedback.className = 'form-feedback';
-
-    const formData = new FormData(form);
-    const trackingData = captureUrlParameters();
-    const eventId = 'ufyt_' + Date.now() + '_' + Math.random().toString(36).slice(2, 11);
-
-    const payload = Object.assign({
-      brand: 'ufyt',
-      source: 'unfuckyourtaxes',
-      surface: 'quiz',
-      name: formData.get('name'),
-      email: formData.get('email'),
-      phone: formData.get('phone'),
-      details: formData.get('details') || null,
-      // Internal triage signal only. It is never shown to the person who
-      // filled this in and must never become a message about them — no
-      // qualification, no predicted outcome, no savings figure.
-      internal_triage_score: Number(resultContainer.dataset.score || 0),
-      event_id: eventId,
-      submitted_at: new Date().toISOString()
-    }, data, trackingData);
-
-    try {
-      const response = await fetch(CONFIG.formEndpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify(payload)
-      });
-      if (!response.ok) throw new Error('Server returned an error');
-      showFeedback('success', CONFIG.successMessage);
-      form.reset();
-
-      // Quiz answers are the reader's tax status. They go to the leads
-      // worker, never to an analytics or ads platform.
-      if (typeof fbq !== 'undefined') fbq('track', 'Lead', { content_name: 'Quiz' }, { eventID: eventId });
-      if (typeof gtag !== 'undefined') gtag('event', 'generate_lead', { event_id: eventId, form_location: 'quiz' });
-
-      setTimeout(() => { window.location.href = '/thank-you'; }, 900);
-    } catch (error) {
-      console.error('Form submission error:', error);
-      showFeedback('error', CONFIG.errorMessage);
-      submitButton.disabled = false;
-      buttonText.style.display = 'inline';
-      buttonLoader.style.display = 'none';
-    }
-  });
-
-  function showFeedback(type, message) {
-    feedback.className = 'form-feedback ' + type;
-    feedback.textContent = message;
-    if (type === 'success') setTimeout(() => { feedback.className = 'form-feedback'; }, 5000);
-  }
-}
-
-// ============================================
-// UTM TRACKING
+// UTM TRACKING & INITIALIZATION
 // ============================================
 
 function captureUrlParameters() {
@@ -328,10 +619,6 @@ function captureUrlParameters() {
   sessionStorage.setItem('tracking_data', JSON.stringify(trackingData));
   return trackingData;
 }
-
-// ============================================
-// INITIALIZE
-// ============================================
 
 document.addEventListener('DOMContentLoaded', () => {
   captureUrlParameters();

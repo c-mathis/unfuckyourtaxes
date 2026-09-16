@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 176" role="img" aria-labelledby="title desc">
+  <title id="title">Unfuck Your Taxes</title>
+  <desc id="desc">Stacked serif wordmark in white.</desc>
+  <g font-family="Times New Roman, Times, serif" font-size="78" font-weight="400" letter-spacing="-3" fill="#f8f8f4">
+    <text x="6" y="70">UNF</text>
+    <text x="168" y="70">*</text>
+    <text x="209" y="70">CK</text>
+    <text x="6" y="143" font-size="76">YOUR TAXES</text>
+  </g>
+</svg>

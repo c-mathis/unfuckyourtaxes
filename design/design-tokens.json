@@ -2,7 +2,7 @@
   "$schema": "https://design-tokens.github.io/community-group/format/",
   "brand": {
     "name": "Unfuck Your Taxes",
-    "version": "1.0",
+    "version": "1.1",
     "sourceOfTruth": "../style.css"
   },
   "color": {
@@ -17,18 +17,18 @@
   },
   "typography": {
     "display": {
-      "fontFamily": ["Times New Roman", "Times", "serif"],
-      "fontWeight": 350,
+      "fontFamily": ["IBM Plex Sans JP", "sans-serif"],
+      "fontWeight": 400,
       "fontStyle": "normal",
-      "case": "title-case",
+      "case": "sentence-case",
       "usage": "headlines, major statements, and the wordmark"
     },
     "body": {
       "fontFamily": ["DM Sans", "sans-serif"],
-      "fontWeight": 400,
+      "fontWeight": 275,
       "fontStyle": "normal",
       "case": "sentence-case",
-      "usage": "body and support copy"
+      "usage": "body and support copy; 500+ is reserved for UI emphasis"
     },
     "utility": {
       "fontFamily": ["DM Mono", "monospace"],

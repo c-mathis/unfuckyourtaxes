@@ -1,6 +1,6 @@
 # Unfuck Your Taxes — Brand & Creative Handoff
 
-Version: 1.0  
+Version: 1.1<br>
 Source of truth: the live implementation in `style.css` and current page templates  
 For: agents creating paid-social, display, organic-social, and supporting brand assets
 
@@ -41,16 +41,16 @@ Rules:
 
 | Role | Font | Weight / treatment | Use |
 | --- | --- | --- | --- |
-| Display | Times New Roman | Light regular (`350` in CSS; render as the lightest available regular), title case, tight leading | Headline and major statement |
-| Body | DM Sans | 400–500 | Explanations, proof, support copy |
+| Display | IBM Plex Sans JP | Regular (`400`), natural sentence case, tight leading | Headline, major statement, and wordmark |
+| Body | DM Sans | Light (`275`) for reading copy; `500+` only for UI emphasis | Explanations, proof, support copy |
 | Utility | DM Mono | 500 | Eyebrows, labels, URLs, small metadata |
 
 Display rules:
 
-- Headings are title case, never all caps.
+- Headings use natural sentence case. Do not force title case or all caps.
 - Do not use italics. The live site sets `em { font-style: normal; }`; emphasis is conveyed by scale, line break, or copy—not slant.
-- Use the serif only for a statement that earns attention. It should feel like a calm financial document, not a fashion magazine.
-- Keep display weight light and generous. Do not use bold/black serif headings.
+- Use the display sans only for a statement that earns attention. It should feel like a direct administrative label, not editorial decoration.
+- Keep display weight regular and measured. Do not use bold/black headings.
 - Use a deliberate line break to create a thought, not to create a decorative staircase.
 
 Utility rules:
@@ -69,7 +69,7 @@ YOUR TAXES
 ```
 
 - The asterisk is `blue`.
-- Set the wordmark in Times New Roman, light regular, uppercase, and a tight two-line lockup. Use it small and left-aligned, usually at the upper left. It is a lockup, not a headline.
+- Set the wordmark in IBM Plex Sans JP, regular, uppercase, and a tight two-line lockup. Use it small and left-aligned, usually at the upper left. It is a lockup, not a headline.
 - The asterisk may censor `unf*ck` / `f*cked` when the copy directly invokes the brand. Do not scatter asterisks as an ornamental motif.
 - Do not use profanity for shock value. One blunt phrase earns attention; the rest of the creative needs to be calm and useful.
 
@@ -220,7 +220,7 @@ Every asset that mentions an outcome, price, urgency, or representation must fol
 ```
 
 - Background: black.
-- Headline: white Times New Roman, light regular, title case.
+- Headline: white IBM Plex Sans JP, regular, natural sentence case.
 - Asterisk and final arrow: blue.
 - Use a subtle horizontal rule above the bottom action area.
 
@@ -284,7 +284,7 @@ Before delivering any asset, verify:
 
 - [ ] Base is black unless it is intentionally white informational or blue conversion.
 - [ ] Blue appears only as the approved surface, asterisk, arrow, rule/detail, or action state.
-- [ ] Display type is Times New Roman, title case, light regular, and never italic.
+- [ ] Display type is IBM Plex Sans JP, regular, natural sentence case, and never italic.
 - [ ] Headline is readable at phone size and carries one clear thought.
 - [ ] Wordmark is intact; blue asterisk is used correctly.
 - [ ] There are no gradients, shadows, stock-tax clichés, extra colors, rounded cards, or decorative noise.
@@ -295,4 +295,6 @@ Before delivering any asset, verify:
 
 ## Legacy reference warning
 
-`assets/og-default.png` is useful for overall hierarchy—black field, small wordmark, large serif statement, blue utility line—but it contains italic serif type. Italics are no longer part of the current brand. Do not recreate that treatment; follow this document and `style.css` instead.
+`assets/og-default.png` is useful only for overall hierarchy—black field, small wordmark, large statement, blue utility line—but its italic serif typography is retired. Do not recreate that treatment; follow this document and `style.css` instead.
+
+`assets/logo-serif-blue-star.*` and `assets/logo-serif-white.*` are retired Times New Roman exports. Keep them only as historical reference; do not use them in new work. The live wordmark follows the IBM Plex Sans JP specification above.

@@ -17,4 +17,4 @@ A static, multi-page marketing site designed for Cloudflare Pages.
 
 This is dependency-free static HTML, CSS, and JavaScript. In Cloudflare Pages, set the build command to blank and the output directory to `.` (the repository root). Connect the custom domain after the first successful deployment.
 
-Contact actions open an email to `hello@unfuckyourtaxes.com`.
+The contact page and paid-traffic assessment post leads to the shared Cloudflare Worker, preserve campaign parameters, and redirect successful submissions to `/thank-you`. Email remains the fallback when the endpoint is unavailable.

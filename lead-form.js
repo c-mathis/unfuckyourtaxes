@@ -86,20 +86,37 @@
         return;
       }
 
+      if (!form.checkValidity()) {
+        showFeedback('error', 'Check the highlighted field and try again.');
+        form.reportValidity();
+        return;
+      }
+
       setBusy(true);
 
       var data = new FormData(form);
       var eventId = 'ufyt_' + Date.now() + '_' + Math.random().toString(36).slice(2, 11);
+      var situationSummary = [
+        'Phone: ' + data.get('phone').trim(),
+        'What is going on? ' + data.get('problem'),
+        'Is anything urgent? ' + data.get('urgency'),
+        data.get('amount_owed') ? 'Amount owed: ' + data.get('amount_owed') : null,
+        data.get('details') ? 'Additional details: ' + data.get('details').trim() : null
+      ].filter(Boolean).join('\n');
       var payload = {
         brand: CONFIG.brand,
         source: CONFIG.source,
         name: data.get('name'),
         email: data.get('email'),
         phone: data.get('phone'),
-        problem: data.get('problem'),
+        problem: situationSummary,
+        situation: situationSummary,
         urgency: data.get('urgency'),
         amount_owed: data.get('amount_owed') || null,
         details: data.get('details') || null,
+        company_url: data.get('company_url') || '',
+        selected_issues: [data.get('problem'), data.get('urgency')].filter(Boolean).join(' | '),
+        issues_count: 2,
         event_id: eventId,
         utm_source: tracking.utm_source || null,
         utm_medium: tracking.utm_medium || null,
@@ -113,10 +130,14 @@
         submitted_at: new Date().toISOString()
       };
 
+      var controller = new AbortController();
+      var timeout = window.setTimeout(function () { controller.abort(); }, 12000);
+
       fetch(CONFIG.endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
+        signal: controller.signal
       }).then(function (response) {
         if (!response.ok) throw new Error('HTTP ' + response.status);
 
@@ -140,6 +161,8 @@
         // Never lose the lead to a failed POST — hand them the mailto.
         setBusy(false);
         showFeedback('error', CONFIG.errorMessage);
+      }).finally(function () {
+        window.clearTimeout(timeout);
       });
     });
   });

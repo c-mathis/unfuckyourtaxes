@@ -11,4 +11,6 @@ intentionally omitted from the table and CSV export.
 Each value has its own spreadsheet column. The single header row is frozen inside
 the table scroll area so it stays aligned without covering lead rows.
 
+Production: `https://ufyt-leads-dash.cameron-07f.workers.dev`
+
 Deploy with Wrangler from this directory.

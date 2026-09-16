@@ -19,7 +19,7 @@ The name is blunt. The execution is serious and administratively credible.
 - Be casual, conversational, and a little irreverent. The brand speaks like a smart person who has seen this exact tax mess before.
 - Lead with the actual problem in customer language: notices, missing returns, balances, books that are a mess, and deadlines.
 - Use contractions, short sentences, and direct questions. “Here’s what we need,” “Let’s look at it,” and “What’s going on?” all sound right.
-- Use the brand’s bluntness deliberately. An occasional “f*cked,” “mess,” or “bullshit” can name the pain or the promise; do not turn every sentence into a joke.
+- Use the brand’s bluntness deliberately. An occasional “f*cked,” “mess,” or “bullsh*t” can name the pain or the promise; do not turn every sentence into a joke.
 - Do not sound therapeutic, inspirational, corporate, or like a formal tax firm. Empathy comes from being useful, nonjudgmental, and easy to understand.
 - Avoid vague, canned reassurance such as “you’re not alone,” “we’ve got you,” “way forward,” “move forward,” or “we make it easy.”
 - Never promise a tax result, savings amount, timeline, settlement, or eligibility before the underlying record is reviewed.

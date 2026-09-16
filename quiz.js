@@ -16,7 +16,7 @@ const QUESTIONS = {
   tax_problem: {
     id: 'tax_problem',
     type: 'pills',
-    title: 'What needs attention?',
+    title: 'What’s going on with your taxes?',
     options: [
       'I owe money to the IRS or state',
       'I have unfiled tax returns',
@@ -28,7 +28,7 @@ const QUESTIONS = {
   contact: {
     id: 'contact',
     type: 'contact',
-    title: 'Who needs help with this?'
+    title: 'Alright. Who are we helping?'
   },
   debt_amount: {
     id: 'debt_amount',
@@ -604,20 +604,36 @@ function calculateTriageScore() {
 // ============================================
 
 function captureUrlParameters() {
+  let trackingData = {};
+  try {
+    trackingData = JSON.parse(sessionStorage.getItem('ufyt_tracking') || '{}');
+  } catch (error) {
+    trackingData = {};
+  }
   const params = new URLSearchParams(window.location.search);
-  const trackingData = {
-    fbclid: params.get('fbclid'),
-    gclid: params.get('gclid'),
-    utm_source: params.get('utm_source'),
-    utm_medium: params.get('utm_medium'),
-    utm_campaign: params.get('utm_campaign'),
-    utm_content: params.get('utm_content'),
-    promo_code: params.get('promo') || params.get('code'),
-    referrer: document.referrer,
-    landing_page: window.location.href
-  };
+  ['fbclid', 'gclid', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'].forEach((key) => {
+    const value = params.get(key);
+    if (value) trackingData[key] = value;
+  });
+  const promoCode = params.get('promo') || params.get('code');
+  if (promoCode) trackingData.promo_code = promoCode;
+  if (!trackingData.referrer) trackingData.referrer = document.referrer || null;
+  if (!trackingData.landing_page) trackingData.landing_page = window.location.href;
+  trackingData.fbp = readCookie('_fbp') || trackingData.fbp || null;
+  trackingData.fbc = readCookie('_fbc') || trackingData.fbc || makeFbc(trackingData.fbclid);
+  sessionStorage.setItem('ufyt_tracking', JSON.stringify(trackingData));
   sessionStorage.setItem('tracking_data', JSON.stringify(trackingData));
   return trackingData;
+}
+
+function readCookie(name) {
+  const prefix = name + '=';
+  const value = document.cookie.split(';').map((part) => part.trim()).find((part) => part.startsWith(prefix));
+  return value ? decodeURIComponent(value.slice(prefix.length)) : null;
+}
+
+function makeFbc(fbclid) {
+  return fbclid ? 'fb.1.' + Date.now() + '.' + fbclid : null;
 }
 
 document.addEventListener('DOMContentLoaded', () => {

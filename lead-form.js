@@ -37,8 +37,18 @@
     });
     if (!stored.landing_page) stored.landing_page = window.location.href;
     if (!stored.referrer) stored.referrer = document.referrer || null;
+    stored.fbp = readCookie('_fbp') || stored.fbp || null;
+    stored.fbc = readCookie('_fbc') || stored.fbc || (stored.fbclid ? 'fb.1.' + Date.now() + '.' + stored.fbclid : null);
     try { sessionStorage.setItem('ufyt_tracking', JSON.stringify(stored)); } catch (e) {}
     return stored;
+  }
+
+  function readCookie(name) {
+    var prefix = name + '=';
+    var found = document.cookie.split(';').map(function (part) { return part.trim(); }).filter(function (part) {
+      return part.indexOf(prefix) === 0;
+    })[0];
+    return found ? decodeURIComponent(found.slice(prefix.length)) : null;
   }
 
   document.addEventListener('DOMContentLoaded', function () {
@@ -124,6 +134,8 @@
         utm_content: tracking.utm_content || null,
         utm_term: tracking.utm_term || null,
         fbclid: tracking.fbclid || null,
+        fbp: tracking.fbp || null,
+        fbc: tracking.fbc || null,
         gclid: tracking.gclid || null,
         referrer: tracking.referrer || null,
         landing_page: tracking.landing_page || window.location.href,

@@ -1,0 +1,4 @@
+lead-dashboard/
+.context/
+*.md
+preview_server.py

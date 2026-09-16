@@ -14,7 +14,7 @@
  */
 window.UFYT_MEASUREMENT = {
   GA4_ID: '',        // e.g. 'G-XXXXXXXXXX' — MathisLLC Analytics account
-  META_PIXEL_ID: '', // e.g. '1234567890'   — a NEW pixel for this brand
+  META_PIXEL_ID: '1708599440630382', // dedicated Unfuck Your Taxes dataset
   CLARITY_ID: ''     // optional, e.g. 'y7j0y6q9ri'
 };
 

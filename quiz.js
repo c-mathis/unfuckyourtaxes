@@ -495,7 +495,6 @@ async function submitLead() {
     situation: situationSummary,
     selected_issues: answerSummary.join(' | '),
     issues_count: answerSummary.length,
-    internal_triage_score: calculateTriageScore(),
     event_id: submissionEventId,
     submitted_at: new Date().toISOString()
   }, flattenAnswers(), trackingData);
@@ -583,23 +582,6 @@ function flattenAnswers() {
     if (key !== 'contact') answers[key] = formatAnswer(data[key]);
   });
   return answers;
-}
-
-function calculateTriageScore() {
-  let score = 0;
-  if ((data.tax_problem || '').includes('owe money')) score += 3;
-  if ((data.tax_problem || '').includes('unfiled')) score += 2;
-  if ((data.tax_problem || '').includes('notice')) score += 2;
-  const amount = data.debt_amount || '';
-  if (amount.includes('$50,000') || amount.includes('$75,000')) score += 3;
-  if (amount.includes('$100,001') || amount.includes('$200,000')) score += 4;
-  if (amount.includes('$300,000') || amount.includes('$400,000')) score += 5;
-  const actions = Array.isArray(data.collection_actions) ? data.collection_actions : [];
-  if (actions.includes('Wage garnishment or bank levy')) score += 5;
-  if (actions.includes('Tax lien')) score += 4;
-  if (data.unfiled_years === '6+ years') score += 4;
-  if (data.notice_type === 'Audit notice') score += 4;
-  return score;
 }
 
 // ============================================

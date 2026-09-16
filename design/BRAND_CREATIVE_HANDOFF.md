@@ -16,12 +16,14 @@ The name is blunt. The execution is serious and administratively credible.
 
 ### Copy voice
 
-- Lead with the fact pattern: records, years, notices, balances, deadlines, scope, and the next action.
-- Be direct and plain-English. The brand is not therapeutic, inspirational, or reassuring by default.
-- Empathy is shown through a nonjudgmental process and useful specificity—not emotional validation or slogans.
-- Avoid soft reassurance such as “no shame required,” “we’ve got you,” “you’re not alone,” “way forward,” “calm,” “move forward,” or “a mess is easier to face.”
+- Be casual, conversational, and a little irreverent. The brand speaks like a smart person who has seen this exact tax mess before.
+- Lead with the actual problem in customer language: notices, missing returns, balances, books that are a mess, and deadlines.
+- Use contractions, short sentences, and direct questions. “Here’s what we need,” “Let’s look at it,” and “What’s going on?” all sound right.
+- Use the brand’s bluntness deliberately. An occasional “f*cked,” “mess,” or “bullshit” can name the pain or the promise; do not turn every sentence into a joke.
+- Do not sound therapeutic, inspirational, corporate, or like a formal tax firm. Empathy comes from being useful, nonjudgmental, and easy to understand.
+- Avoid vague, canned reassurance such as “you’re not alone,” “we’ve got you,” “way forward,” “move forward,” or “we make it easy.”
 - Never promise a tax result, savings amount, timeline, settlement, or eligibility before the underlying record is reviewed.
-- Prefer CTAs that name the work: “Get the facts,” “Talk through the facts,” “See how it works,” and “Start with the record.”
+- Prefer CTAs that sound like a conversation: “Let’s look at it,” “Let’s talk,” “Start here,” and “Ask us.”
 
 ## Non-negotiable visual system
 

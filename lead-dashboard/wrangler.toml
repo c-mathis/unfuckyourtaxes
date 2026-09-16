@@ -1,8 +1,6 @@
 name = "ufyt-leads-dash"
-main = "src/index.js"
-compatibility_date = "2026-09-15"
-workers_dev = true
-preview_urls = true
+pages_build_output_dir = "./pages-dist"
+compatibility_date = "2026-09-16"
 
 [[d1_databases]]
 binding = "DB"

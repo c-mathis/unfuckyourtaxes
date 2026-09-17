@@ -262,6 +262,8 @@ h2 { color: var(--white); font: 350 clamp(1.95rem, 3.7vw, 3.4rem)/1.14 var(--ser
 .thanks-steps { max-width: 760px; margin: 3.5rem 0 0; }
 .thanks-steps h3, .thanks-steps p { color: var(--white); }
 .thanks-steps p { color: var(--muted); }
+.thank-you-confirmation { display: flex; min-height: clamp(20rem, 46vh, 32rem); max-width: 620px; flex-direction: column; justify-content: center; }
+.thank-you-confirmation .lead { margin: 1.4rem 0 2rem; }
 @media (max-width: 1000px) {
   /* Form first on a narrow screen — this is the ad landing surface. */
   .contact-split { grid-template-columns: 1fr; gap: 3rem; }

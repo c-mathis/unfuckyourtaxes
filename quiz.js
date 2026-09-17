@@ -8,6 +8,8 @@ const CONFIG = {
   errorMessage: 'That did not send.'
 };
 
+const IRS_CONTACT_OPTION = 'I just need to contact the IRS';
+
 // ============================================
 // QUIZ QUESTIONS
 // ============================================
@@ -135,6 +137,11 @@ const quizContainer = document.getElementById('quizContainer');
 // ============================================
 
 function buildPath() {
+  if (data.tax_problem === "I'm not sure — I just know I'm f*cked") {
+    currentPath = ['tax_problem', 'unsure_situation', 'contact'];
+    return currentPath;
+  }
+
   currentPath = ['tax_problem', 'contact'];
   if (data.tax_problem && FLOWS[data.tax_problem]) currentPath = currentPath.concat(FLOWS[data.tax_problem]);
   return currentPath;
@@ -439,6 +446,13 @@ function advance(value) {
 
   if (step.id === 'tax_problem' && data.tax_problem !== value) clearOldBranchAnswers();
   data[step.id] = value;
+
+  if (step.id === 'unsure_situation' && value === IRS_CONTACT_OPTION) {
+    delete data.contact;
+    renderIrsContactExit();
+    return;
+  }
+
   isAdvancing = true;
   quizContainer.querySelectorAll('button, input, select').forEach((control) => { control.disabled = true; });
 
@@ -452,6 +466,47 @@ function advance(value) {
       submitLead();
     }
   }, delay);
+}
+
+function renderIrsContactExit() {
+  document.body.classList.remove('quiz-scroll-step');
+  document.body.classList.remove('quiz-contact-step');
+  quizProgressContainer.innerHTML = '';
+  quizContainer.innerHTML = '';
+  quizContainer.dataset.stepType = 'exit';
+
+  const meta = document.createElement('p');
+  meta.className = 'quiz-progress-meta quiz-submit-meta quiz-irs-meta';
+  meta.textContent = 'Official IRS contact';
+
+  const title = document.createElement('h2');
+  title.className = 'quiz-question-title';
+  title.tabIndex = -1;
+  title.textContent = 'Just looking for the IRS?';
+
+  const message = document.createElement('p');
+  message.className = 'quiz-submit-message quiz-irs-message';
+  message.textContent = 'Use the official IRS website or call their individual taxpayer line. You do not need to fill out anything else here.';
+
+  const actions = document.createElement('div');
+  actions.className = 'quiz-irs-actions';
+
+  const website = document.createElement('a');
+  website.className = 'button button-light';
+  website.href = 'https://www.irs.gov/';
+  website.target = '_blank';
+  website.rel = 'noopener noreferrer';
+  website.textContent = 'Visit IRS.gov';
+
+  const phone = document.createElement('a');
+  phone.className = 'text-link quiz-irs-phone';
+  phone.href = 'tel:+18008291040';
+  phone.textContent = 'Call 800-829-1040';
+  phone.setAttribute('aria-label', 'Call the IRS at 800-829-1040');
+
+  actions.append(website, phone);
+  quizContainer.append(meta, title, message, actions);
+  title.focus({ preventScroll: true });
 }
 
 function goBack() {

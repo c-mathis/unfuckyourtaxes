@@ -598,8 +598,13 @@ async function submitLead() {
 
     // Quiz answers are tax-status information. They go to the lead worker,
     // never to an analytics or advertising platform.
-    if (typeof fbq !== 'undefined') fbq('track', 'Lead', { content_name: 'Quiz' }, { eventID: submissionEventId });
-    trackQuizEvent('generate_lead', { event_id: submissionEventId });
+    // Internal QA submissions (name contains "QA TEST") must not count as
+    // conversions in Meta or GA. The lead Worker applies the same rule.
+    const isInternalTest = /\bQA TEST\b/i.test(payload.name || '');
+    if (!isInternalTest) {
+      if (typeof fbq !== 'undefined') fbq('track', 'Lead', { content_name: 'Quiz' }, { eventID: submissionEventId });
+      trackQuizEvent('generate_lead', { event_id: submissionEventId });
+    }
     window.location.href = '/thank-you';
   } catch (error) {
     console.error('Form submission error:', error);

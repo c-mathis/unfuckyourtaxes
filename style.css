@@ -282,3 +282,10 @@ h2 { color: var(--white); font: 350 clamp(1.95rem, 3.7vw, 3.4rem)/1.14 var(--ser
   .lead-form-row { grid-template-columns: 1fr; }
   .lead-form .quiz-submit { max-width: none; }
 }
+
+/* SMS marketing consent checkbox (quiz contact step and contact form). */
+.quiz-checkbox { display: flex; align-items: flex-start; gap: .75rem; max-width: 640px; }
+.quiz-checkbox input[type="checkbox"] { flex: none; width: 18px; height: 18px; margin: .15rem 0 0; accent-color: var(--blue); cursor: pointer; }
+.quiz-checkbox label { margin: 0; color: var(--muted); font: 400 .78rem/1.6 var(--sans); text-transform: none; letter-spacing: 0; cursor: pointer; }
+.quiz-checkbox label a { color: inherit; text-decoration: underline; }
+.lead-form .quiz-checkbox { margin-top: -.4rem; }

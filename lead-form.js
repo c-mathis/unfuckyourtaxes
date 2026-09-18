@@ -10,6 +10,9 @@
 (function () {
   'use strict';
 
+  var SMS_CONSENT_VERSION = 'ufyt-sms-2026-09-18';
+  var SMS_CONSENT_PLAIN = document.querySelector('label[for="lf-sms-consent"]') ? document.querySelector('label[for="lf-sms-consent"]').textContent.replace(/\s+/g, ' ').trim() : '';
+
   var CONFIG = {
     endpoint: 'https://unfuck-leads-worker.cameron-07f.workers.dev/submit',
     brand: 'ufyt',
@@ -119,6 +122,9 @@
         name: data.get('name'),
         email: data.get('email'),
         phone: data.get('phone'),
+        sms_consent: !!form.elements.sms_consent && form.elements.sms_consent.checked,
+        sms_consent_text: form.elements.sms_consent && form.elements.sms_consent.checked ? SMS_CONSENT_PLAIN : null,
+        sms_consent_version: form.elements.sms_consent && form.elements.sms_consent.checked ? SMS_CONSENT_VERSION : null,
         problem: situationSummary,
         situation: situationSummary,
         urgency: data.get('urgency'),

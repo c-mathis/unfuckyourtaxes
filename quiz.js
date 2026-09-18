@@ -2,6 +2,10 @@
 // CONFIGURATION
 // ============================================
 
+const SMS_CONSENT_VERSION = 'ufyt-sms-2026-09-18';
+const SMS_CONSENT_TEXT = 'Text me about my request. By checking this box you agree to receive automated marketing and follow-up text messages from Unf*ck Your Taxes (Forti.fi LLC) at the number you entered, including messages sent by an autodialer. Consent is not a condition of purchase. Message frequency varies. Msg & data rates may apply. Reply STOP to cancel or HELP for help. See our <a href="/privacy">Privacy Policy</a> and <a href="/terms">Terms</a>.';
+const SMS_CONSENT_PLAIN = SMS_CONSENT_TEXT.replace(/<[^>]+>/g, '');
+
 const CONFIG = {
   // Shared Unfuck Leads worker, same as /contact. Tagged brand: 'ufyt'.
   formEndpoint: 'https://unfuck-leads-worker.cameron-07f.workers.dev/submit',
@@ -310,6 +314,22 @@ function renderContactStep(title) {
   nameRow.append(firstName.wrapper, lastName.wrapper);
   form.append(nameRow, email.wrapper, phone.wrapper);
 
+  // SMS marketing consent: unchecked by default, never required. The exact
+  // wording and version are stored with the lead as consent evidence.
+  const smsConsent = document.createElement('div');
+  smsConsent.className = 'quiz-checkbox quiz-sms-consent';
+  const smsInput = document.createElement('input');
+  smsInput.type = 'checkbox';
+  smsInput.id = 'quizSmsConsent';
+  smsInput.name = 'sms_consent';
+  smsInput.value = SMS_CONSENT_VERSION;
+  smsInput.checked = existing.sms_consent === true;
+  const smsLabel = document.createElement('label');
+  smsLabel.htmlFor = 'quizSmsConsent';
+  smsLabel.innerHTML = SMS_CONSENT_TEXT;
+  smsConsent.append(smsInput, smsLabel);
+  form.appendChild(smsConsent);
+
   const honeypot = document.createElement('div');
   honeypot.className = 'hp-field';
   honeypot.setAttribute('aria-hidden', 'true');
@@ -355,6 +375,7 @@ function renderContactStep(title) {
       last_name: lastName.input.value.trim(),
       email: email.input.value.trim(),
       phone: phone.input.value.trim(),
+      sms_consent: smsInput.checked,
       company_url: form.elements.company_url.value.trim()
     };
     advance(data.contact);
@@ -543,6 +564,9 @@ async function submitLead() {
     last_name: contact.last_name || '',
     email: contact.email || '',
     phone: contact.phone || '',
+    sms_consent: contact.sms_consent === true,
+    sms_consent_text: contact.sms_consent === true ? SMS_CONSENT_PLAIN : null,
+    sms_consent_version: contact.sms_consent === true ? SMS_CONSENT_VERSION : null,
     details: null,
     company_url: '',
     // Compatibility fields for the currently deployed shared lead worker.

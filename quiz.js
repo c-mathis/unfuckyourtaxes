@@ -11,6 +11,32 @@ const CONFIG = {
 const IRS_CONTACT_OPTION = 'I just need to contact the IRS';
 
 // ============================================
+// FUNNEL MEASUREMENT
+// ============================================
+// Only the step position and its kind (question or contact) leave the page.
+// Never send a question id or an answer: both are tax-status information.
+// Events go through the same channels as generate_lead (gtag when a GA4 ID
+// is configured, Cloudflare Zaraz otherwise).
+
+const trackedStepPositions = new Set();
+
+function trackQuizEvent(name, params) {
+  const payload = Object.assign({ form_location: 'quiz' }, params);
+  if (typeof gtag !== 'undefined') gtag('event', name, payload);
+  if (window.zaraz && typeof window.zaraz.track === 'function') window.zaraz.track(name, payload);
+}
+
+function trackStepView(step) {
+  const position = stepIndex + 1;
+  if (trackedStepPositions.has(position)) return;
+  trackedStepPositions.add(position);
+  const isContact = step.type === 'contact';
+  const params = { step_number: position, step_kind: isContact ? 'contact' : 'question' };
+  if (data.tax_problem) params.step_total = getTotalSteps();
+  trackQuizEvent(isContact ? 'quiz_contact_view' : 'quiz_step_' + position, params);
+}
+
+// ============================================
 // QUIZ QUESTIONS
 // ============================================
 
@@ -136,14 +162,11 @@ const quizContainer = document.getElementById('quizContainer');
 // PATH BUILDING & NAVIGATION
 // ============================================
 
+// Contact details are always the last step, so every answer is captured
+// before we ask for a name and phone number.
 function buildPath() {
-  if (data.tax_problem === "I'm not sure — I just know I'm f*cked") {
-    currentPath = ['tax_problem', 'unsure_situation', 'contact'];
-    return currentPath;
-  }
-
-  currentPath = ['tax_problem', 'contact'];
-  if (data.tax_problem && FLOWS[data.tax_problem]) currentPath = currentPath.concat(FLOWS[data.tax_problem]);
+  const branch = (data.tax_problem && FLOWS[data.tax_problem]) || [];
+  currentPath = ['tax_problem'].concat(branch, ['contact']);
   return currentPath;
 }
 
@@ -179,6 +202,7 @@ function render(moveFocus) {
   quizContainer.dataset.stepType = step.type;
 
   renderProgress();
+  trackStepView(step);
 
   const title = document.createElement('h2');
   title.id = 'quizQuestion';
@@ -219,7 +243,9 @@ function renderProgress() {
   const progressMeta = document.createElement('div');
   progressMeta.className = 'quiz-progress-meta';
   const progressText = document.createElement('span');
-  progressText.textContent = stepIndex === 0 ? 'Question 1' : 'Question ' + (stepIndex + 1) + ' of ' + displayedTotal;
+  const currentStep = getCurrentStep();
+  if (currentStep && currentStep.type === 'contact') progressText.textContent = 'Last step';
+  else progressText.textContent = stepIndex === 0 ? 'Question 1' : 'Question ' + (stepIndex + 1) + ' of ' + displayedTotal;
   progressMeta.appendChild(progressText);
 
   if (stepIndex > 0) {
@@ -316,7 +342,7 @@ function renderContactStep(title) {
   honeypot.innerHTML = '<label for="quizCompanyUrl">Company website</label><input type="text" id="quizCompanyUrl" name="company_url" tabindex="-1" autocomplete="off">';
   form.appendChild(honeypot);
 
-  const continueButton = makeContinueButton('Next');
+  const continueButton = makeContinueButton('Send my answers');
   const feedback = document.createElement('p');
   feedback.className = 'form-feedback quiz-step-feedback';
   feedback.setAttribute('role', 'status');
@@ -324,7 +350,7 @@ function renderContactStep(title) {
 
   const consent = document.createElement('p');
   consent.className = 'fine-print form-consent quiz-contact-consent';
-  consent.innerHTML = 'By continuing, you agree that we may contact you about your enquiry. It does not create a client relationship. <strong>Do not send Social Security numbers, bank details, or tax documents here.</strong> See our <a href="/privacy">Privacy Policy</a>.';
+  consent.innerHTML = 'By sending, you agree that we may contact you about your enquiry. It does not create a client relationship. <strong>Do not send Social Security numbers, bank details, or tax documents here.</strong> See our <a href="/privacy">Privacy Policy</a>.';
 
   form.append(consent, feedback, continueButton);
   quizContainer.appendChild(form);
@@ -378,7 +404,7 @@ function renderDateStep(step, title) {
   if (data[step.id] && data[step.id] !== 'Not provided') input.value = data[step.id];
   field.append(label, input);
 
-  const continueButton = makeContinueButton('Submit my answers');
+  const continueButton = makeContinueButton('Next');
   form.append(field, continueButton);
   form.addEventListener('submit', (event) => {
     event.preventDefault();
@@ -573,10 +599,7 @@ async function submitLead() {
     // Quiz answers are tax-status information. They go to the lead worker,
     // never to an analytics or advertising platform.
     if (typeof fbq !== 'undefined') fbq('track', 'Lead', { content_name: 'Quiz' }, { eventID: submissionEventId });
-    if (typeof gtag !== 'undefined') gtag('event', 'generate_lead', { event_id: submissionEventId, form_location: 'quiz' });
-    if (window.zaraz && typeof window.zaraz.track === 'function') {
-      window.zaraz.track('generate_lead', { event_id: submissionEventId, form_location: 'quiz' });
-    }
+    trackQuizEvent('generate_lead', { event_id: submissionEventId });
     window.location.href = '/thank-you';
   } catch (error) {
     console.error('Form submission error:', error);

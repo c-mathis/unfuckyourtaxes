@@ -40,9 +40,9 @@ async function listLeads(env) {
     `SELECT id, name, email, phone, problem, selected_issues, status,
       notes, payload_json, created_at, updated_at, next_action, booked_at, replied_at, email_opt_out,
       (SELECT COUNT(*) FROM email_sequence s WHERE s.lead_id = leads.id) AS emails_total,
-      (SELECT COUNT(*) FROM email_sequence s WHERE s.lead_id = leads.id AND s.status = 'sent') AS emails_sent,
+      (SELECT COUNT(*) FROM email_sequence s WHERE s.lead_id = leads.id AND (s.status = 'sent' OR (s.status = 'skipped' AND s.last_error = 'sent-manually'))) AS emails_sent,
       (SELECT MIN(s.send_at) FROM email_sequence s WHERE s.lead_id = leads.id AND s.status = 'pending') AS next_email_at,
-      (SELECT s.last_error FROM email_sequence s WHERE s.lead_id = leads.id AND s.status IN ('cancelled', 'skipped') ORDER BY s.updated_at DESC, s.step DESC LIMIT 1) AS emails_stopped
+      (SELECT s.last_error FROM email_sequence s WHERE s.lead_id = leads.id AND s.status IN ('cancelled', 'skipped') AND s.last_error != 'sent-manually' ORDER BY s.updated_at DESC, s.step DESC LIMIT 1) AS emails_stopped
      FROM leads WHERE source = 'taxes' ORDER BY created_at DESC LIMIT 500`
   ).all();
   return json({ success: true, leads: result.results });

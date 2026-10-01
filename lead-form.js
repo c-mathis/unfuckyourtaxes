@@ -15,6 +15,7 @@
     brand: 'ufyt',
     source: 'unfuckyourtaxes',
     thankYou: '/thank-you',
+    repeatThankYou: '/already-submitted',
     fallbackEmail: 'hello@unfuckyourtaxes.com',
     successMessage: "Got it. We'll come back to you within one business day.",
     errorMessage: 'That did not send. Email us at ' + 'hello@unfuckyourtaxes.com' + ' and we will pick it up from there.'
@@ -152,6 +153,18 @@
         signal: controller.signal
       }).then(function (response) {
         if (!response.ok) throw new Error('HTTP ' + response.status);
+        return response.json();
+      }).then(function (result) {
+        if (result.duplicate === true) {
+          if (typeof gtag !== 'undefined') {
+            gtag('event', 'repeat_lead_submission', { form_location: 'contact' });
+          }
+          if (window.zaraz && typeof window.zaraz.track === 'function') {
+            window.zaraz.track('repeat_lead_submission', { form_location: 'contact' });
+          }
+          window.location.href = CONFIG.repeatThankYou;
+          return;
+        }
 
         showFeedback('success', CONFIG.successMessage);
         form.reset();

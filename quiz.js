@@ -595,6 +595,15 @@ async function submitLead() {
       error.status = response.status;
       throw error;
     }
+    const result = await response.json();
+
+    if (result.duplicate === true) {
+      // This is useful operational analytics, but intentionally is not a Meta
+      // Lead or GA generate_lead conversion.
+      trackQuizEvent('repeat_lead_submission', { form_location: 'quiz' });
+      window.location.href = '/already-submitted';
+      return;
+    }
 
     // Quiz answers are tax-status information. They go to the lead worker,
     // never to an analytics or advertising platform.

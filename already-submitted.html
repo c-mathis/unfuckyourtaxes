@@ -26,9 +26,9 @@
 <section class="section dark">
 <div class="shell">
 <div class="thank-you-confirmation">
-<p class="eyebrow light">Already received</p>
-<h1>We already have your info.</h1>
-<p class="lead">We’re looking into it. If you want to talk sooner, schedule a call or call or text us at 213-752-5732.</p>
+<p class="eyebrow light">Already submitted</p>
+<h1 id="repeatHeading">Hey. Let's get started.</h1>
+<p class="lead">We have your information, and our team has already reached out. Schedule a time with us or call us now to get things going.</p>
 <div class="thank-you-actions">
 <a class="button button-light" href="https://book.ufyt.dev">Schedule a call <b aria-hidden="true">↗</b></a>
 <a class="text-link" href="tel:+12137525732">Call or text 213-752-5732</a>
@@ -43,5 +43,15 @@
 <p class="copyright">© <span data-year></span> Unfuck Your Taxes</p>
 </div>
 </footer>
+<script>
+(function () {
+  var heading = document.getElementById('repeatHeading');
+  var firstName = '';
+  try {
+    firstName = (sessionStorage.getItem('ufyt_repeat_first_name') || '').trim();
+  } catch (error) {}
+  if (firstName) heading.textContent = 'Hey, ' + firstName + ". Let's get started.";
+})();
+</script>
 </body>
 </html>

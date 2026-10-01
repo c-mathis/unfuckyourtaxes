@@ -162,6 +162,9 @@
           if (window.zaraz && typeof window.zaraz.track === 'function') {
             window.zaraz.track('repeat_lead_submission', { form_location: 'contact' });
           }
+          try {
+            sessionStorage.setItem('ufyt_repeat_first_name', String(payload.name || '').trim().split(/\s+/)[0]);
+          } catch (error) {}
           window.location.href = CONFIG.repeatThankYou;
           return;
         }

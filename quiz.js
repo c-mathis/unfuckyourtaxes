@@ -601,6 +601,7 @@ async function submitLead() {
       // This is useful operational analytics, but intentionally is not a Meta
       // Lead or GA generate_lead conversion.
       trackQuizEvent('repeat_lead_submission', { form_location: 'quiz' });
+      try { sessionStorage.setItem('ufyt_repeat_first_name', payload.first_name || ''); } catch (error) {}
       window.location.href = '/already-submitted';
       return;
     }

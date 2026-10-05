@@ -1,4 +1,4 @@
-const STATUSES = ['new', 'contacted', 'booked', 'qualified', 'proposal_sent', 'won', 'lost'];
+const STATUSES = ['new', 'contacted', 'booked', 'no_show', 'qualified', 'proposal_sent', 'won', 'lost'];
 const STOP_REASONS = {
   booked: 'booked a call',
   replied: 'replied',
@@ -109,7 +109,7 @@ h1{margin:0;font-size:clamp(26px,4vw,48px);letter-spacing:-.05em;line-height:.95
 <nav class="crm-bar" aria-label="UFYT CRM"><div class="crm-brand"><span class="crm-mark">U/</span><div><strong>UFYT CRM</strong><small>Fortifi LLC</small></div></div><div class="crm-nav"><a class="active" href="/" aria-current="page">Leads</a><a href="https://inbox.ufyt.dev/">Inbox</a></div></nav>
 <header class="page-header"><div><h1>UFYT Lead Desk</h1><p>Lead spreadsheet · newest first. Set a lead's status to anything but <b>new</b> and their automated follow-up emails stop immediately.</p></div><div class="actions"><button id="refresh">Refresh</button><button class="primary" id="csv">Download CSV</button></div></header>
 <section class="stats"><div class="stat"><b id="total">—</b><span>Total leads</span></div><div class="stat"><b id="today">—</b><span>Today</span></div><div class="stat"><b id="open">—</b><span>Open</span></div></section>
-<div class="filters"><input id="search" type="search" placeholder="Search name, email, phone or submitted answers"><select id="statusFilter"><option value="">All statuses</option><option>new</option><option>contacted</option><option>booked</option><option>qualified</option><option>proposal_sent</option><option>won</option><option>lost</option></select></div>
+<div class="filters"><input id="search" type="search" placeholder="Search name, email, phone or submitted answers"><select id="statusFilter"><option value="">All statuses</option><option>new</option><option>contacted</option><option>booked</option><option>no_show</option><option>qualified</option><option>proposal_sent</option><option>won</option><option>lost</option></select></div>
 <div class="table-wrap"><table class="lead-table"><thead><tr><th>Submitted</th><th>First name</th><th>Last name</th><th>Email</th><th>Phone</th><th>Tax problem</th><th>Follow-up 1 question</th><th>Follow-up 1 answer</th><th>Follow-up 2 question</th><th>Follow-up 2 answer</th><th>Status</th><th>Follow-up emails</th><th>Sales notes</th><th>Action</th></tr></thead><tbody id="rows"></tbody></table><div class="empty" id="empty" hidden>No leads match this view.</div></div><div class="flash" id="flash"></div>
 <script>
 const statuses=${JSON.stringify(STATUSES)};let leads=[];

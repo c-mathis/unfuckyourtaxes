@@ -613,7 +613,7 @@ async function submitLead() {
     const isInternalTest = /\bQA TEST\b/i.test(payload.name || '');
     if (!isInternalTest) {
       if (typeof fbq !== 'undefined') fbq('track', 'Lead', { content_name: 'Quiz' }, { eventID: submissionEventId });
-      trackQuizEvent('generate_lead', { event_id: submissionEventId });
+      trackQuizEvent('generate_lead', { event_id: submissionEventId, lead_id: submissionEventId });
     }
     window.location.href = '/thank-you';
   } catch (error) {
@@ -682,6 +682,9 @@ function flattenAnswers() {
 // ============================================
 
 function captureUrlParameters() {
+  if (window.UFYT_ATTRIBUTION && typeof window.UFYT_ATTRIBUTION.get === 'function') {
+    return window.UFYT_ATTRIBUTION.get();
+  }
   let trackingData = {};
   try {
     trackingData = JSON.parse(sessionStorage.getItem('ufyt_tracking') || '{}');

@@ -29,6 +29,9 @@
   ];
 
   function captureTracking() {
+    if (window.UFYT_ATTRIBUTION && typeof window.UFYT_ATTRIBUTION.get === 'function') {
+      return window.UFYT_ATTRIBUTION.get();
+    }
     var stored = {};
     try { stored = JSON.parse(sessionStorage.getItem('ufyt_tracking') || '{}'); } catch (e) {}
     var params = new URLSearchParams(window.location.search);
@@ -104,6 +107,9 @@
       }
 
       setBusy(true);
+      // Refresh cookie-backed GA/Meta IDs immediately before submission;
+      // those cookies may have been created after this script initialized.
+      tracking = captureTracking();
 
       var data = new FormData(form);
       var eventId = 'ufyt_' + Date.now() + '_' + Math.random().toString(36).slice(2, 11);
@@ -114,7 +120,7 @@
         data.get('amount_owed') ? 'Amount owed: ' + data.get('amount_owed') : null,
         data.get('details') ? 'Additional details: ' + data.get('details').trim() : null
       ].filter(Boolean).join('\n');
-      var payload = {
+      var payload = Object.assign({}, tracking, {
         brand: CONFIG.brand,
         source: CONFIG.source,
         name: data.get('name'),
@@ -129,19 +135,8 @@
         selected_issues: [data.get('problem'), data.get('urgency')].filter(Boolean).join(' | '),
         issues_count: 2,
         event_id: eventId,
-        utm_source: tracking.utm_source || null,
-        utm_medium: tracking.utm_medium || null,
-        utm_campaign: tracking.utm_campaign || null,
-        utm_content: tracking.utm_content || null,
-        utm_term: tracking.utm_term || null,
-        fbclid: tracking.fbclid || null,
-        fbp: tracking.fbp || null,
-        fbc: tracking.fbc || null,
-        gclid: tracking.gclid || null,
-        referrer: tracking.referrer || null,
-        landing_page: tracking.landing_page || window.location.href,
         submitted_at: new Date().toISOString()
-      };
+      });
 
       var controller = new AbortController();
       var timeout = window.setTimeout(function () { controller.abort(); }, 12000);
@@ -181,10 +176,10 @@
           fbq('track', 'Lead', { content_name: 'Contact form' }, { eventID: eventId });
         }
         if (typeof gtag !== 'undefined') {
-          gtag('event', 'generate_lead', { event_id: eventId, form_location: 'contact' });
+          gtag('event', 'generate_lead', { event_id: eventId, lead_id: eventId, form_location: 'contact' });
         }
         if (window.zaraz && typeof window.zaraz.track === 'function') {
-          window.zaraz.track('generate_lead', { event_id: eventId, form_location: 'contact' });
+          window.zaraz.track('generate_lead', { event_id: eventId, lead_id: eventId, form_location: 'contact' });
         }
 
         window.setTimeout(function () { window.location.href = CONFIG.thankYou; }, 900);

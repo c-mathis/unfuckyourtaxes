@@ -250,6 +250,12 @@ function renderProgress() {
   if (currentStep && currentStep.type === 'contact') progressText.textContent = 'Last step';
   else progressText.textContent = 'Question ' + (stepIndex + 1) + ' of ' + questionTotal;
   progressMeta.appendChild(progressText);
+  if (stepIndex === 0) {
+    const cue = document.createElement('span');
+    cue.className = 'quiz-progress-cue';
+    cue.textContent = 'Answer below';
+    progressMeta.appendChild(cue);
+  }
 
   if (stepIndex > 0) {
     const backButton = document.createElement('button');
@@ -272,7 +278,6 @@ function renderPills(step, title) {
     const button = document.createElement('button');
     button.type = 'button';
     button.className = 'quiz-option';
-    if (option.length > 46) button.classList.add('quiz-option-long');
     button.textContent = option;
     button.addEventListener('click', () => advance(option));
     optionsDiv.appendChild(button);
@@ -294,7 +299,6 @@ function renderMulti(step, title) {
     const button = document.createElement('button');
     button.type = 'button';
     button.className = 'quiz-option quiz-multi-option';
-    if (option.length > 46) button.classList.add('quiz-option-long');
     button.textContent = option;
     button.setAttribute('aria-pressed', selected.has(option) ? 'true' : 'false');
     button.classList.toggle('is-selected', selected.has(option));

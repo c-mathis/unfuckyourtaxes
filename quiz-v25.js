@@ -48,7 +48,7 @@ const QUESTIONS = {
     options: [
       'I owe money to the IRS or state',
       'I have unfiled tax returns',
-      'I received a notice from the IRS or am being audited',
+      'I received a notice from the IRS.',
       'I need help filing or organizing my taxes',
       "I'm not sure — I just know I'm f*cked"
     ]
@@ -139,7 +139,7 @@ const QUESTIONS = {
 const FLOWS = {
   'I owe money to the IRS or state': ['debt_amount', 'collection_actions'],
   'I have unfiled tax returns': ['unfiled_years', 'self_employed'],
-  'I received a notice from the IRS or am being audited': ['notice_type', 'notice_deadline'],
+  'I received a notice from the IRS.': ['notice_type', 'notice_deadline'],
   'I need help filing or organizing my taxes': ['filing_status', 'refund_expectation'],
   "I'm not sure — I just know I'm f*cked": ['unsure_situation']
 };

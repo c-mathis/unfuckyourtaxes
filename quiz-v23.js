@@ -244,8 +244,11 @@ function renderProgress() {
   progressMeta.className = 'quiz-progress-meta';
   const progressText = document.createElement('span');
   const currentStep = getCurrentStep();
+  // Count questions only; the contact step is labelled separately so the
+  // visitor sees "1 of 3" before they have committed to anything.
+  const questionTotal = data.tax_problem ? getTotalSteps() - 1 : 3;
   if (currentStep && currentStep.type === 'contact') progressText.textContent = 'Last step';
-  else progressText.textContent = stepIndex === 0 ? 'Question 1' : 'Question ' + (stepIndex + 1) + ' of ' + displayedTotal;
+  else progressText.textContent = 'Question ' + (stepIndex + 1) + ' of ' + questionTotal;
   progressMeta.appendChild(progressText);
 
   if (stepIndex > 0) {

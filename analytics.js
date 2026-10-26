@@ -13,7 +13,7 @@
  * Events here carry an ID and a surface name, and nothing about the person.
  */
 window.UFYT_MEASUREMENT = {
-  GA4_ID: '',        // e.g. 'G-XXXXXXXXXX' — MathisLLC Analytics account
+  GA4_ID: 'G-635FZCCJH2', // "Unfuck Your Taxes" property, MathisLLC Analytics account
   META_PIXEL_ID: '1708599440630382', // dedicated Unfuck Your Taxes dataset
   CLARITY_ID: ''     // optional, e.g. 'y7j0y6q9ri'
 };

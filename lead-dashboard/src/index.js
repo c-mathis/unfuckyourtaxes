@@ -38,7 +38,7 @@ function json(data, status = 200) {
 async function listLeads(env) {
   const result = await env.DB.prepare(
     `SELECT id, name, email, phone, problem, selected_issues, status,
-      notes, payload_json, created_at, updated_at, next_action, booked_at, replied_at, email_opt_out,
+      notes, payload_json, created_at, updated_at, next_action, next_action_date, booking_url, booked_at, replied_at, email_opt_out,
       (SELECT COUNT(*) FROM email_sequence s WHERE s.lead_id = leads.id) AS emails_total,
       (SELECT COUNT(*) FROM email_sequence s WHERE s.lead_id = leads.id AND (s.status = 'sent' OR (s.status = 'skipped' AND s.last_error = 'sent-manually'))) AS emails_sent,
       (SELECT MIN(s.send_at) FROM email_sequence s WHERE s.lead_id = leads.id AND s.status = 'pending') AS next_email_at,

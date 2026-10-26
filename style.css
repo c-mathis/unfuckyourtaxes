@@ -212,8 +212,8 @@ h2 { color: var(--white); font: 350 clamp(1.95rem, 3.7vw, 3.4rem)/1.14 var(--ser
   .quiz-section { min-height: 0; display: flex; align-items: flex-end; padding: .75rem 0 max(.75rem, env(safe-area-inset-bottom)); }
   .quiz-question-title { padding: 0; border: 0; font-size: 1.65rem; margin: 0; }
   .quiz-options, .quiz-select-wrap { margin-top: 1.5rem; gap: .5rem; }
-  .quiz-option { min-height: 52px; padding: .8rem .9rem; font-size: clamp(.95rem, 4.2vw, 1.05rem); }
-  .quiz-option-long { font-size: clamp(.86rem, 3.7vw, .95rem); letter-spacing: -.01em; }
+  .quiz-option { min-height: 52px; padding: .8rem .8rem; font-size: clamp(.9rem, 3.9vw, 1.05rem); white-space: nowrap; }
+  .quiz-option-long { font-size: clamp(.72rem, 2.85vw, .86rem); letter-spacing: -.015em; }
   .quiz-results.is-fullscreen { padding: 1.25rem 0 2rem; }
   .quiz-results-top { margin-bottom: 1.75rem; padding-bottom: 1rem; }
   .quiz-results-top p { display: none; }

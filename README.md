@@ -22,34 +22,35 @@ The contact page and paid-traffic assessment post leads to the shared Cloudflare
 ## SMS opt-in proof (November 9, 2026)
 
 The public `/contact` form and final contact step of `/quiz` offer **one optional,
-unchecked marketing-text checkbox**. Service/customer-care text consent is deferred
-for a separate booking/onboarding flow, at Cameron's direction. It must not be
-inferred from this marketing choice or bundled with accepting an agreement.
+unchecked checkbox for submission/case updates**, using Cameron's exact wording:
 
-Only these two pages load `sms-consent-v3.js` and its companion stylesheet. The
-marketing checkbox is the last visible item before Submit. Immediately below
-Submit, one compact paragraph explains the phone-number-plus-checkbox consent action,
-frequency, mobile-plan rates, HELP/STOP, optional purchase-independent consent and links to
-`/privacy#text-messages` and `/terms#text-messages`. Repeated form and footer notices
-were removed on these two pages; general site terms remain on `/terms`. Phone is
-optional unless texting is selected. For Twilio's Web Form opt-in proof, use
-`https://unfuckyourtaxes.com/contact` and register this flow for **Marketing only**.
-Do not claim it collects separate service-update or customer-care consent.
+> Yes, I would like to receive automated texts from UFYT about your form submission, tax case, and important updates.
 
-`lead-form-v7.js` and `quiz-v28.js` submit `sms_consent` with `scope: marketing`,
-the marketing choice, `service_updates: false`, exact displayed wording, policy
-links, version, timestamp and source page. The existing production lead Worker
-stores the complete request in `leads.payload_json`, or `lead_submissions.payload_json`
-for a repeat submission, along with server-side submission time, IP and user agent.
-Old leads without explicit consent have no text enrollment. This website change
-does not enable outbound SMS or change messaging settings. Before sending, honor
-the latest applicable consent and provider suppression, send the appropriate
-welcome confirmation, and configure/test branded HELP and STOP handling.
+This wording collects informational service-update consent, not marketing consent.
+The privacy/terms descriptions and receipt match that scope. The earlier plan for
+marketing here and service consent later was superseded by this explicit wording.
+Promotional texts require a separate applicable opt-in; no such control is currently
+present. The booking flow is unchanged.
 
-Keep released consent versions immutable so recorded wording remains reproducible.
-The first release (`v1`) collected two independent consents. `v2` changed to marketing
-only. Current `v3` places that checkbox immediately above Submit and the supporting
-language below Submit, following Cameron's Twilio example. Older form/quiz assets
-remain available for already-open pages.
+Both forms load `sms-consent-v4.js` with the existing `sms-consent-v3.css` layout.
+The checkbox is immediately above Submit; the supporting language and policy links
+are below Submit. Phone is optional unless texting is selected. Twilio proof URL:
+`https://unfuckyourtaxes.com/contact`. Match registration categories to submission,
+customer-care and case/service updates; this proof does not grant marketing consent.
 
-Requirements checked against Twilio's [Toll-Free Verification Onboarding Guide](https://help.twilio.com/articles/13264118705051-Required-Information-for-Toll-Free-Verification).
+`lead-form-v7.js` and `quiz-v28.js` submit `sms_consent` with `scope: service_updates`,
+`service_updates` true/false, `marketing: false`, exact wording, policy links, version,
+timestamp and source page. The existing Worker stores full requests in
+`leads.payload_json` or `lead_submissions.payload_json` for repeats, plus server-side
+time, IP and user agent. Old leads without explicit consent have no text enrollment.
+This website change does not enable outbound SMS or change messaging settings.
+Before sending, honor applicable consent and suppression and configure/test welcome,
+HELP and STOP behavior. Do not include sensitive tax records in texts.
+
+Released consent versions stay immutable for historical evidence. `v1` collected
+two independent choices; `v2` narrowed to marketing; `v3` moved that choice before
+Submit and its explanation below. Current `v4` replaces the wording with the exact
+submission/case-update sentence above and records the matching informational scope.
+Older scripts remain available for already-open pages.
+
+Requirements reference: [Twilio Toll-Free Verification Onboarding Guide](https://help.twilio.com/articles/13264118705051-Required-Information-for-Toll-Free-Verification).

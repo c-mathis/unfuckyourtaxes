@@ -14,7 +14,9 @@
 </script>
 <script defer src="script.js?v=3">
 </script>
-<script defer src="lead-form-v6.js">
+<link rel="stylesheet" href="sms-consent-v1.css">
+<script defer src="sms-consent-v1.js"></script>
+<script defer src="lead-form-v7.js">
 </script>
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Unfuck Your Taxes">
@@ -80,8 +82,8 @@
 </div>
 <div class="lead-form-row">
 <div class="quiz-field">
-<label for="lf-phone">Phone</label>
-<input id="lf-phone" name="phone" type="tel" autocomplete="tel" required>
+<label for="lf-phone">Phone <span class="optional">Optional unless you choose texts</span></label>
+<input id="lf-phone" name="phone" type="tel" autocomplete="tel">
 </div>
 <div class="quiz-field">
 <label for="lf-problem">What is going on?</label>
@@ -98,6 +100,7 @@
 </div>
 </div>
 </div>
+<div data-sms-consent></div>
 <div class="lead-form-row">
 <div class="quiz-field">
 <label for="lf-urgency">Is anything urgent?</label>
@@ -145,7 +148,7 @@
 </button>
 <div class="form-feedback" role="status" aria-live="polite">
 </div>
-<p class="fine-print form-consent">By sending this you agree we may contact you about your enquiry. Sending it does not create a client relationship and no work begins until a fee and scope are agreed in writing. <strong>Please do not send Social Security numbers, bank details, or full tax records here</strong> &mdash; we will explain a secure way to share documents.</p>
+<p class="fine-print form-consent">By sending this you agree we may call or email you about your enquiry. Texts require a separate choice above. Sending it does not create a client relationship and no work begins until a fee and scope are agreed in writing. <strong>Please do not send Social Security numbers, bank details, or full tax records here</strong> &mdash; we will explain a secure way to share documents.</p>
 </form>
 </div>
 

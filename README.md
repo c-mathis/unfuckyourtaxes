@@ -21,26 +21,31 @@ The contact page and paid-traffic assessment post leads to the shared Cloudflare
 
 ## SMS opt-in proof (November 9, 2026)
 
-The public `/contact` form and the final contact step of `/quiz` offer separate,
-unchecked choices for service/customer-care updates and automated marketing.
-Phone and text enrollment are optional; selecting texts requires a valid phone.
-Only these two pages load `sms-consent-v1.js` and its small companion stylesheet.
-The matching SMS policy sections are `/privacy#text-messages` and
-`/terms#text-messages`. For Twilio's Web Form opt-in proof, use
-`https://unfuckyourtaxes.com/contact`.
+The public `/contact` form and final contact step of `/quiz` offer **one optional,
+unchecked marketing-text checkbox**. Service/customer-care text consent is deferred
+for a separate booking/onboarding flow, at Cameron's direction. It must not be
+inferred from this marketing choice or bundled with accepting an agreement.
 
-`lead-form-v7.js` and `quiz-v26.js` submit `sms_consent` with both independent
-choices, the exact displayed wording, policy links, version, timestamp and source
-page. The existing production lead Worker stores the complete request in
-`leads.payload_json`, or `lead_submissions.payload_json` for a repeat submission,
-along with server-side submission time, IP and user agent. Old leads without
-explicit consent have no text enrollment. Before any outbound SMS integration,
-honor the latest applicable consent and provider suppression, send the appropriate
+Only these two pages load `sms-consent-v2.js` and its companion stylesheet. A single
+compact block carries the text choice, short required disclosure and links to
+`/privacy#text-messages` and `/terms#text-messages`. Repeated form and footer notices
+were removed on these two pages; general site terms remain on `/terms`. Phone is
+optional unless texting is selected. For Twilio's Web Form opt-in proof, use
+`https://unfuckyourtaxes.com/contact` and register this flow for **Marketing only**.
+Do not claim it collects separate service-update or customer-care consent.
+
+`lead-form-v7.js` and `quiz-v27.js` submit `sms_consent` with `scope: marketing`,
+the marketing choice, `service_updates: false`, exact displayed wording, policy
+links, version, timestamp and source page. The existing production lead Worker
+stores the complete request in `leads.payload_json`, or `lead_submissions.payload_json`
+for a repeat submission, along with server-side submission time, IP and user agent.
+Old leads without explicit consent have no text enrollment. This website change
+does not enable outbound SMS or change messaging settings. Before sending, honor
+the latest applicable consent and provider suppression, send the appropriate
 welcome confirmation, and configure/test branded HELP and STOP handling.
-This website change does not enable outbound SMS or alter any messaging settings.
 
-Keep the versioned consent script immutable so previously recorded wording remains
-reproducible. Create a new version when the disclosure changes. Keep the older
-quiz/form assets available for already-open pages.
+Keep released consent versions immutable so recorded wording remains reproducible.
+The first release (`v1`) collected two independent consents; `v2` replaces it with
+marketing only. Older form/quiz assets remain available for already-open pages.
 
 Requirements checked against Twilio's [Toll-Free Verification Onboarding Guide](https://help.twilio.com/articles/13264118705051-Required-Information-for-Toll-Free-Verification).

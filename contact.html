@@ -14,8 +14,8 @@
 </script>
 <script defer src="script.js?v=3">
 </script>
-<link rel="stylesheet" href="sms-consent-v2.css">
-<script defer src="sms-consent-v2.js"></script>
+<link rel="stylesheet" href="sms-consent-v3.css">
+<script defer src="sms-consent-v3.js"></script>
 <script defer src="lead-form-v7.js">
 </script>
 <meta property="og:type" content="website">
@@ -100,7 +100,6 @@
 </div>
 </div>
 </div>
-<div data-sms-consent></div>
 <div class="lead-form-row">
 <div class="quiz-field">
 <label for="lf-urgency">Is anything urgent?</label>
@@ -142,13 +141,15 @@
 <label for="lf-company">Company</label>
 <input id="lf-company" name="company_url" type="text" tabindex="-1" autocomplete="off">
 </div>
+<div class="sms-submit-group">
+<div class="form-feedback" role="status" aria-live="polite"></div>
+<div data-sms-consent></div>
 <button type="submit" class="button quiz-submit">
 <span class="button-text">Send this</span>
 <span class="button-loader">Sending&hellip;</span>
 </button>
-<div class="form-feedback" role="status" aria-live="polite">
+<div data-sms-disclosure></div>
 </div>
-
 </form>
 </div>
 

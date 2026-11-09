@@ -26,15 +26,17 @@ unchecked marketing-text checkbox**. Service/customer-care text consent is defer
 for a separate booking/onboarding flow, at Cameron's direction. It must not be
 inferred from this marketing choice or bundled with accepting an agreement.
 
-Only these two pages load `sms-consent-v2.js` and its companion stylesheet. A single
-compact block carries the text choice, short required disclosure and links to
+Only these two pages load `sms-consent-v3.js` and its companion stylesheet. The
+marketing checkbox is the last visible item before Submit. Immediately below
+Submit, one compact paragraph explains the phone-number-plus-checkbox consent action,
+frequency, mobile-plan rates, HELP/STOP, optional purchase-independent consent and links to
 `/privacy#text-messages` and `/terms#text-messages`. Repeated form and footer notices
 were removed on these two pages; general site terms remain on `/terms`. Phone is
 optional unless texting is selected. For Twilio's Web Form opt-in proof, use
 `https://unfuckyourtaxes.com/contact` and register this flow for **Marketing only**.
 Do not claim it collects separate service-update or customer-care consent.
 
-`lead-form-v7.js` and `quiz-v27.js` submit `sms_consent` with `scope: marketing`,
+`lead-form-v7.js` and `quiz-v28.js` submit `sms_consent` with `scope: marketing`,
 the marketing choice, `service_updates: false`, exact displayed wording, policy
 links, version, timestamp and source page. The existing production lead Worker
 stores the complete request in `leads.payload_json`, or `lead_submissions.payload_json`
@@ -45,7 +47,9 @@ the latest applicable consent and provider suppression, send the appropriate
 welcome confirmation, and configure/test branded HELP and STOP handling.
 
 Keep released consent versions immutable so recorded wording remains reproducible.
-The first release (`v1`) collected two independent consents; `v2` replaces it with
-marketing only. Older form/quiz assets remain available for already-open pages.
+The first release (`v1`) collected two independent consents. `v2` changed to marketing
+only. Current `v3` places that checkbox immediately above Submit and the supporting
+language below Submit, following Cameron's Twilio example. Older form/quiz assets
+remain available for already-open pages.
 
 Requirements checked against Twilio's [Toll-Free Verification Onboarding Guide](https://help.twilio.com/articles/13264118705051-Required-Information-for-Toll-Free-Verification).

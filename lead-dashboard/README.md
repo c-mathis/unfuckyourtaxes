@@ -18,4 +18,14 @@ between lead data and email without signing in again.
 
 Production: `https://ufyt-leads-dash.pages.dev`
 
+The All leads, UFYT, and Resolution tabs share the same D1 lead records. New
+resolution leads show Five Star delivery state and record ID, and a separate
+pending/sold/paid/rejected sale field. Delivery does not mark a lead sold.
+Historical leads retain their UFYT route. CSV exports follow the active tab and
+filters and include route, delivery, partner ID, and sale status.
+
+Resolution intake uses `quiz-v29.js` / `lead-form-v8.js` and the versioned,
+separate referral-consent control in `resolution-consent-v1.js`. Those leads
+see `/resolution-thank-you`; the public form does not enqueue delivery itself.
+
 Deploy with `wrangler pages deploy` from this directory.

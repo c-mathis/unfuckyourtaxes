@@ -1,0 +1,6 @@
+/* Single referral choice; no UFYT texting opt-in. */
+.referral-consent { min-width: 0; margin: 0 0 .75rem; padding: 0; border: 0; color: var(--white); font: 400 .875rem/1.5 var(--sans); }
+.referral-consent label { display: flex; align-items: flex-start; gap: .6rem; cursor: pointer; }
+.referral-consent input[type="checkbox"] { flex: 0 0 18px; width: 18px; height: 18px; margin: .15rem 0 0; accent-color: var(--blue); }
+.referral-consent input:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
+[data-enquiry-consent][hidden] { display: none; }

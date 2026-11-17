@@ -34,6 +34,9 @@ support for earlier checkbox receipts and already-open forms. Automatic Five Sta
 delivery continues; no customer messaging settings changed.
 
 Current form assets: `quiz-v30.js`, `lead-form-v9.js`,
-`resolution-consent-v3.js`, and `referral-consent-v2.css`.
+`resolution-consent-v4.js`, and `referral-consent-v2.css`.
 New submissions omit `sms_consent`; no texting opt-in is inferred.
 Historical SMS and form assets remain immutable for existing pages and records.
+
+The current Resolution notice uses Cameron's exact sentence: “By submitting this form, you agree that Unfuck Your Taxes may share your information with third-party tax service providers who may contact you about your inquiry.”
+It contains no extra policy link; Privacy and Terms links remain in the footer.

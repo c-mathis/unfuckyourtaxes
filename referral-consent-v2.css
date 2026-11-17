@@ -1,0 +1,4 @@
+/* Referral notice uses the same typography as the original enquiry notice. */
+.resolution-notice { margin-bottom: .75rem; }
+[data-enquiry-consent][hidden] { display: none; }
+.resolution-notice a { text-decoration: underline; text-underline-offset: .15em; }

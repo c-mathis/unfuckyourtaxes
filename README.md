@@ -26,12 +26,14 @@ original enquiry notice, required phone field and original footer disclaimer.
 There is no UFYT texting checkbox or rates/HELP/STOP disclosure on either form.
 Privacy and Terms retain their current published wording.
 
-For qualifying $10,001+ debt referrals only, one referral checkbox replaces the
-general enquiry notice. It preserves the exact existing referral consent text,
-version and payload accepted by the Worker, and automatic Five Star delivery.
-No backend routing or customer messaging settings changed.
+For qualifying $10,001+ debt referrals only, a short “By sending” notice above
+Submit replaces the general enquiry notice. There is no referral checkbox.
+Submitting records the exact displayed text, version, timestamp, page and
+`acceptance_method: form_submit`. The Worker accepts this version and retains
+support for earlier checkbox receipts and already-open forms. Automatic Five Star
+delivery continues; no customer messaging settings changed.
 
 Current form assets: `quiz-v30.js`, `lead-form-v9.js`,
-`resolution-consent-v2.js`, and `referral-consent-v1.css`.
+`resolution-consent-v3.js`, and `referral-consent-v2.css`.
 New submissions omit `sms_consent`; no texting opt-in is inferred.
 Historical SMS and form assets remain immutable for existing pages and records.

@@ -352,7 +352,7 @@ function renderContactStep(title) {
   honeypot.innerHTML = '<label for="quizCompanyUrl">Company website</label><input type="text" id="quizCompanyUrl" name="company_url" tabindex="-1" autocomplete="off">';
   form.appendChild(honeypot);
 
-  const continueButton = makeContinueButton('Send my answers');
+  const continueButton = makeContinueButton('Unf*ck My Taxes', true);
   const feedback = document.createElement('p');
   feedback.className = 'form-feedback quiz-step-feedback';
   feedback.setAttribute('role', 'status');
@@ -462,11 +462,20 @@ function validateContactField(field, error) {
   return !message;
 }
 
-function makeContinueButton(label) {
+function makeContinueButton(label, includeArrow = false) {
   const button = document.createElement('button');
   button.type = 'submit';
   button.className = 'button button-light quiz-step-continue';
-  button.textContent = label;
+  const buttonLabel = document.createElement('span');
+  buttonLabel.textContent = label;
+  button.appendChild(buttonLabel);
+  if (includeArrow) {
+    const arrow = document.createElement('span');
+    arrow.className = 'quiz-button-arrow';
+    arrow.setAttribute('aria-hidden', 'true');
+    arrow.textContent = '\u2192';
+    button.appendChild(arrow);
+  }
   return button;
 }
 

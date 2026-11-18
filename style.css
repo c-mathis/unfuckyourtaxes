@@ -122,6 +122,7 @@ h2 { color: var(--white); font: 350 clamp(1.95rem, 3.7vw, 3.4rem)/1.14 var(--ser
 .quiz-multi-option.is-selected:after { background: var(--black); border-color: var(--black); }
 .quiz-step-actions { margin-top: 1.25rem; }
 .quiz-step-continue { width: 100%; justify-content: center; border: 0; cursor: pointer; }
+.quiz-button-arrow { color: var(--blue); font-size: 1.25rem; font-weight: 400; line-height: 1; }
 .quiz-step-continue:disabled { opacity: .45; cursor: not-allowed; transform: none; }
 .quiz-contact-form, .quiz-date-form { display: grid; gap: 1rem; margin-top: 1.75rem; padding-top: 1.4rem; border-top: 2px solid rgba(248,248,244,.58); }
 .quiz-contact-name-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }

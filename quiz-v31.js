@@ -157,6 +157,7 @@ const data = {};
 
 const quizProgressContainer = document.getElementById('quizProgress');
 const quizContainer = document.getElementById('quizContainer');
+const quizHeaderProgress = document.getElementById('quizHeaderProgress');
 
 // ============================================
 // PATH BUILDING & NAVIGATION
@@ -242,20 +243,12 @@ function renderProgress() {
 
   const progressMeta = document.createElement('div');
   progressMeta.className = 'quiz-progress-meta';
-  const progressText = document.createElement('span');
   const currentStep = getCurrentStep();
   // Count questions only; the contact step is labelled separately so the
   // visitor sees "1 of 3" before they have committed to anything.
   const questionTotal = data.tax_problem ? getTotalSteps() - 1 : 3;
-  if (currentStep && currentStep.type === 'contact') progressText.textContent = 'Last step';
-  else progressText.textContent = 'Question ' + (stepIndex + 1) + ' of ' + questionTotal;
-  progressMeta.appendChild(progressText);
-  if (stepIndex === 0) {
-    const cue = document.createElement('span');
-    cue.className = 'quiz-progress-cue';
-    cue.textContent = 'Answer below';
-    progressMeta.appendChild(cue);
-  }
+  if (currentStep && currentStep.type === 'contact') quizHeaderProgress.textContent = 'Last step';
+  else quizHeaderProgress.textContent = 'Question ' + (stepIndex + 1) + ' of ' + questionTotal;
 
   if (stepIndex > 0) {
     const backButton = document.createElement('button');
@@ -264,11 +257,16 @@ function renderProgress() {
     backButton.textContent = '\u2190 Back';
     backButton.addEventListener('click', goBack);
     progressMeta.appendChild(backButton);
+    quizContainer.appendChild(progressMeta);
   }
-  quizContainer.appendChild(progressMeta);
 }
 
 function renderPills(step, title) {
+  const choiceHint = document.createElement('p');
+  choiceHint.className = 'quiz-choice-hint';
+  choiceHint.textContent = 'Choose one to continue';
+  quizContainer.appendChild(choiceHint);
+
   const optionsDiv = document.createElement('div');
   optionsDiv.className = 'quiz-options';
   optionsDiv.setAttribute('role', 'group');
@@ -287,6 +285,11 @@ function renderPills(step, title) {
 
 function renderMulti(step, title) {
   const selected = new Set(Array.isArray(data[step.id]) ? data[step.id] : []);
+  const choiceHint = document.createElement('p');
+  choiceHint.className = 'quiz-choice-hint';
+  choiceHint.textContent = 'Select all that apply, then hit Next';
+  quizContainer.appendChild(choiceHint);
+
   const optionsDiv = document.createElement('div');
   optionsDiv.className = 'quiz-options quiz-multi-options';
   optionsDiv.setAttribute('role', 'group');
